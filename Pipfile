@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 alembic = "*"
 click = "*"
+flask = "*"
 flask-cors = "*"
 flask-login = "*"
 flask-migrate = "*"
@@ -27,7 +28,7 @@ sqlalchemy = "*"
 werkzeug = "*"
 wtforms = "*"
 zipp = "*"
-flask = "*"
+vite = "*"
 
 [dev-packages]
 
