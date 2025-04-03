@@ -8,6 +8,7 @@ mako = "*"
 greenlet = "*"
 flask-migrate = "*"
 alembic = "*"
+flask = "*"
 
 [dev-packages]
 
