@@ -4,4 +4,5 @@ from .groups import Group
 from .group_members import GroupMember
 from .expenses import Expenses
 from .balances import Balances
+from .payments import Payments
 from .db import environment, SCHEMA
