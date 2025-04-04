@@ -12,7 +12,7 @@ class GroupMember(db.Model):
     created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now(), nullable=False)
 
-    group = db.relationship('Groups', back_populates='members')
+    group = db.relationship('Group', back_populates='members')
     user = db.relationship('User', back_populates='group_memberships')
 
     def to_dict(self):

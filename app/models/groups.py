@@ -14,7 +14,7 @@ class Group(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, default=datetime.now(), onupdate=datetime.now())
 
-    members = db.relationship('GroupMember', back_populates='groups', cascade="all, delete-orphan")
+    members = db.relationship('GroupMember', back_populates='group', cascade="all, delete-orphan")
     expenses = db.relationship('Expense', backref='groups', cascade="all, delete-orphan")
 
     def to_dict(self):
