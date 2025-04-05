@@ -16,6 +16,8 @@ class Group(db.Model):
 
     members = db.relationship('GroupMember', back_populates='group', cascade="all, delete-orphan")
     expenses = db.relationship('Expense', backref='groups', cascade="all, delete-orphan")
+    comments = db.relationship('Comment', back_populates='groups', cascade='all, delete-orphan')
+
 
     def to_dict(self):
         return {

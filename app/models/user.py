@@ -14,8 +14,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
-    group_memberships = db.relationship('GroupMember', back_populates='user', cascade='all, delete orphan')
-    friends = db.relationship('Friend', back_populates='users')
+    group_memberships = db.relationship('GroupMember', back_populates='user', cascade='all, delete-orphan')
+    friends = db.relationship('Friend', foreign_keys='Friend.user_id', back_populates='user', cascade='all, delete-orphan')
+    friend_of = db.relationship('Friend', foreign_keys='Friend.friend_id', back_populates='friend', cascade='all, delete-orphan')
+    comments = db.relationship('Comment', back_populates='user', cascade='all, delete-orphan')
 
 
     @property

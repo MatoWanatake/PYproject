@@ -17,6 +17,8 @@ class Expenses(db.Model):
 
     group = db.relationship('Group', backref=db.backref('expenses', lazy=True))
     user = db.relationship('User', backref=db.backref('expenses_created', lazy=True))
+    comments = db.relationship('Comment', back_populates='expenses', cascade='all, delete-orphan')
+
 
     def to_dict(self):
         return {
