@@ -42,4 +42,4 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password, password)
 
     def to_dict(self):
-        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns if column.name != 'password_hash'}
