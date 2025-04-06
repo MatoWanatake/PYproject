@@ -1,0 +1,5 @@
+rm ../instance/dev.db
+rm versions/*
+flask db migrate -m "Generate Migrations For Models"
+flask db upgrade
+flask seed all

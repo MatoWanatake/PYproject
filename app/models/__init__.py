@@ -1,10 +1,9 @@
-from .db import db
+from .db import db, environment, SCHEMA
 from .user import User
-from .groups import Group
+from .friend import Friend
+from .group import Group
 from .group_members import GroupMember
-from .expenses import Expenses
-from .balances import Balances
-from .payments import Payments
-from .friends import Friend
-from .comments import Comments
-from .db import environment, SCHEMA
+from .expense import Expense
+from .comment import Comment
+from .expense_debit import ExpenseDebit
+from .expense_credit import ExpenseCredit
