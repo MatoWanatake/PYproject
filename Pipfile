@@ -27,6 +27,10 @@ jinja2 = "==3.1.2"
 mako = "==1.2.4"
 markupsafe = "==2.1.2"
 packaging = "==24.2"
+<<<<<<< HEAD
+=======
+pipenv = "==2024.4.1"
+>>>>>>> 82ab22f (new branch for routes)
 platformdirs = "==4.3.7"
 python-dateutil = "==2.8.2"
 python-dotenv = "==0.21.0"
