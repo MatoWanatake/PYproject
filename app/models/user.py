@@ -8,7 +8,7 @@ from .db import db
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.BigInteger().with_variant(db.Integer, "sqlite"), primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
@@ -42,4 +42,5 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password, password)
 
     def to_dict(self):
-        return {column.name: getattr(self, column.name) for column in self.__table__.columns if column.name != 'password_hash'}
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns if
+                column.name != 'password_hash'}

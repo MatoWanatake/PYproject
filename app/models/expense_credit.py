@@ -1,3 +1,5 @@
+from operator import index
+
 from sqlalchemy import func
 
 from .db import db
@@ -6,14 +8,17 @@ from .db import db
 class ExpenseCredit(db.Model):
     __tablename__ = 'expense_credits'
 
-    id = db.Column(db.Integer, primary_key=True)
-    paid_by = db.Column(db.Integer, db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'),
-                        nullable=False)
-    paid_to = db.Column(db.Integer, db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'),
-                        nullable=False)
+    id = db.Column(db.BigInteger().with_variant(db.Integer, "sqlite"), primary_key=True, autoincrement=True)
+    paid_by = db.Column(db.BigInteger().with_variant(db.Integer, "sqlite"),
+                        db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'),
+                        nullable=False, index=True)
+    paid_to = db.Column(db.BigInteger().with_variant(db.Integer, "sqlite"),
+                        db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'),
+                        nullable=False, index=True)
     amount = db.Column(db.Float, nullable=False)
-    group_id = db.Column(db.Integer, db.ForeignKey('groups.id', onupdate='CASCADE', ondelete='CASCADE'),
-                         nullable=True)
+    group_id = db.Column(db.BigInteger().with_variant(db.Integer, "sqlite"),
+                         db.ForeignKey('groups.id', onupdate='CASCADE', ondelete='CASCADE'),
+                         nullable=True, index=True)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())
 

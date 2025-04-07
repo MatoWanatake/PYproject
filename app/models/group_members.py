@@ -6,10 +6,12 @@ from .db import db
 class GroupMember(db.Model):
     __tablename__ = 'group_members'
 
-    group_id = db.Column(db.Integer, db.ForeignKey('groups.id', onupdate='CASCADE', ondelete='CASCADE'),
+    group_id = db.Column(db.BigInteger().with_variant(db.Integer, "sqlite"),
+                         db.ForeignKey('groups.id', onupdate='CASCADE', ondelete='CASCADE'),
                          primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'),
-                        primary_key=True)
+    user_id = db.Column(db.BigInteger().with_variant(db.Integer, "sqlite"),
+                        db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'),
+                        primary_key=True, index=True)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, server_default=func.now())
 
     # Relationships
