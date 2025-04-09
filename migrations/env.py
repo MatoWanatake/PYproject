@@ -1,58 +1,40 @@
 from __future__ import with_statement
-
 import logging
 from logging.config import fileConfig
-
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
+from sqlalchemy import engine_from_config, pool, text
 from alembic import context
 
 import os
+from flask import current_app
+
+# Load environment variables
 environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get("SCHEMA")
 
-
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
+# Alembic Config object
 config = context.config
 
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
+# Set up logging
 fileConfig(config.config_file_name)
 logger = logging.getLogger('alembic.env')
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-from flask import current_app
+# Set SQLAlchemy URL
 config.set_main_option(
     'sqlalchemy.url',
-    str(current_app.extensions['migrate'].db.engine.url).replace('%', '%%'))
-target_metadata = current_app.extensions['migrate'].db.metadata
+    str(current_app.extensions['migrate'].db.engine.url).replace('%', '%%')
+)
 
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
+# Target metadata for autogeneration
+target_metadata = current_app.extensions['migrate'].db.metadata
 
 
 def run_migrations_offline():
-    """Run migrations in 'offline' mode.
-
-    This configures the context with just a URL
-    and not an Engine, though an Engine is acceptable
-    here as well.  By skipping the Engine creation
-    we don't even need a DBAPI to be available.
-
-    Calls to context.execute() here emit the given string to the
-    script output.
-
-    """
+    """Run migrations in 'offline' mode."""
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=url, target_metadata=target_metadata, literal_binds=True
+        url=url,
+        target_metadata=target_metadata,
+        literal_binds=True
     )
 
     with context.begin_transaction():
@@ -60,16 +42,7 @@ def run_migrations_offline():
 
 
 def run_migrations_online():
-    """Run migrations in 'online' mode.
-
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
-
-    """
-
-    # this callback is used to prevent an auto-migration from being generated
-    # when there are no changes to the schema
-    # reference: http://alembic.zzzcomputing.com/en/latest/cookbook.html
+    """Run migrations in 'online' mode."""
     def process_revision_directives(context, revision, directives):
         if getattr(config.cmd_opts, 'autogenerate', False):
             script = directives[0]
@@ -84,22 +57,22 @@ def run_migrations_online():
     )
 
     with connectable.connect() as connection:
+        # Only attempt schema creation for non-SQLite databases
+        if SCHEMA and connection.dialect.name != "sqlite":
+            connection.execute(text(f"CREATE SCHEMA IF NOT EXISTS {SCHEMA}"))
+
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
             process_revision_directives=process_revision_directives,
             **current_app.extensions['migrate'].configure_args
         )
-        # Create a schema (only in production)
-        if SCHEMA:
-            connection.execute(f"CREATE SCHEMA IF NOT EXISTS {SCHEMA}")
 
-        # Set search path to your schema (only in production)
         with context.begin_transaction():
-            if SCHEMA:
-                context.execute(f"SET search_path TO {SCHEMA}")
             context.run_migrations()
 
+
+# Entry point
 if context.is_offline_mode():
     run_migrations_offline()
 else:
