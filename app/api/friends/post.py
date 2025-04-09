@@ -36,7 +36,6 @@ def friends_add():
 @login_required
 def friends_delete():
     form = FriendsDeleteForm(request)
-    form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
         # Delete friends
