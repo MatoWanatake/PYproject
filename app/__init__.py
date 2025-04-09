@@ -1,9 +1,19 @@
 import os
+
 from flask import Flask, render_template, request, session, redirect
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
+from sqlite3 import Connection as SQLite3Connection
+
+from .api.expenses import expenses_get_blueprint, expenses_post_blueprint, expenses_put_blueprint, \
+    expenses_delete_blueprint
+from .api.friends import friends_get_blueprint, friends_post_blueprint
+from .api.groups import groups_get_blueprint, groups_post_blueprint, groups_put_blueprint, groups_delete_blueprint
+from .api.group_members import group_members_get_blueprint, group_members_post_blueprint
 from .models import db, User
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
@@ -26,13 +36,41 @@ def load_user(id):
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
+
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
+
+app.register_blueprint(friends_get_blueprint, url_prefix='/api/friends')
+app.register_blueprint(friends_post_blueprint, url_prefix='/api/friends')
+
+app.register_blueprint(expenses_get_blueprint, url_prefix='/api/expenses')
+app.register_blueprint(expenses_post_blueprint, url_prefix='/api/expenses')
+app.register_blueprint(expenses_put_blueprint, url_prefix='/api/expenses')
+app.register_blueprint(expenses_delete_blueprint, url_prefix='/api/expenses')
+
+app.register_blueprint(groups_get_blueprint, url_prefix='/api/groups')
+app.register_blueprint(groups_post_blueprint, url_prefix='/api/groups')
+app.register_blueprint(groups_put_blueprint, url_prefix='/api/groups')
+app.register_blueprint(groups_delete_blueprint, url_prefix='/api/groups')
+
+app.register_blueprint(group_members_get_blueprint, url_prefix='/api/groups')
+app.register_blueprint(group_members_post_blueprint, url_prefix='/api/groups')
+
 db.init_app(app)
 Migrate(app, db)
 
 # Application Security
 CORS(app)
+
+# Make sure the sqlite respects foreign key actions
+# https://stackoverflow.com/a/15542046
+@event.listens_for(Engine, "connect")
+def _set_sqlite_pragma(dbapi_connection, _):
+    if isinstance(dbapi_connection, SQLite3Connection):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON;")
+        cursor.close()
+
 
 
 # Since we are deploying with Docker and Flask,
