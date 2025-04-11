@@ -6,6 +6,8 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
+from sqlalchemy.engine import Connection
+
 from alembic import context
 
 import os
@@ -60,16 +62,8 @@ def run_migrations_offline():
 
 
 def run_migrations_online():
-    """Run migrations in 'online' mode.
+    """Run migrations in 'online' mode."""
 
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
-
-    """
-
-    # this callback is used to prevent an auto-migration from being generated
-    # when there are no changes to the schema
-    # reference: http://alembic.zzzcomputing.com/en/latest/cookbook.html
     def process_revision_directives(context, revision, directives):
         if getattr(config.cmd_opts, 'autogenerate', False):
             script = directives[0]
@@ -84,23 +78,20 @@ def run_migrations_online():
     )
 
     with connectable.connect() as connection:
+        dialect = connection.dialect.name
+
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
             process_revision_directives=process_revision_directives,
             **current_app.extensions['migrate'].configure_args
         )
-        # Create a schema (only in production)
-        if SCHEMA:
+
+        # Only run schema setup for PostgreSQL
+        if SCHEMA and dialect == 'postgresql':
             connection.execute(f"CREATE SCHEMA IF NOT EXISTS {SCHEMA}")
 
-        # Set search path to your schema (only in production)
         with context.begin_transaction():
-            if SCHEMA:
+            if SCHEMA and dialect == 'postgresql':
                 context.execute(f"SET search_path TO {SCHEMA}")
             context.run_migrations()
-
-if context.is_offline_mode():
-    run_migrations_offline()
-else:
-    run_migrations_online()
