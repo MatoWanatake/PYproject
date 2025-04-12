@@ -4,7 +4,7 @@ from wtforms.validators import ValidationError
 class ArrayOfDebits:
     def __init__(self, message=None, keys=None):
         self.message = message
-        self.key = keys or ["id", "amount"]
+        self.key = keys or ["amount", "user_id"]
 
     def __call__(self, form, field):
         # Parse the JSON string input into a Python object
@@ -14,7 +14,7 @@ class ArrayOfDebits:
 
         # Ensure every element in the array is an integer
         if not all(self.valid_keys(item) for item in data):
-            raise ValidationError("Array must only contain objects with the keys id and amount.")
+            raise ValidationError("Array must only contain objects with the keys amount and user_id.")
 
     def valid_keys(self, data):
         if not isinstance(data, dict):

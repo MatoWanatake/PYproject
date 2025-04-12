@@ -4,8 +4,8 @@ from app.models.group import Group
 
 def seed_groups():
     groups = [
-        Group(name="Work Friends"),
-        Group(name="Family"),
+        Group(name="U1 + U2 + U3 + U4"),
+        Group(name="U2 + U3"),
     ]
 
     db.session.bulk_save_objects(groups)

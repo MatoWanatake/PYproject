@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "js-cookie": "^3.0.5",
+    "nanoid": "^5.1.5",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
@@ -26,6 +28,8 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "postcss": "^8.5.3",
+    "postcss-nested": "^7.0.2",
     "redux-logger": "^3.0.6",
     "vite": "^4.4.5",
     "vite-plugin-eslint": "^1.8.1"

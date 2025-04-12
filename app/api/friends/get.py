@@ -13,7 +13,7 @@ def friends_get():
     # https://medium.com/@thinesh12/unlocking-the-power-of-composite-primary-keys-in-sqlalchemy-b378fb975e9b
     # Return all friends of the current user
     return [
-        friend.user.to_dict(True) for friend in Friend.query.options(
+        friend.friend.to_dict(True) for friend in Friend.query.options(
             joinedload(Friend.user),
             joinedload(Friend.friend),
         ).filter_by(
