@@ -18,8 +18,14 @@ def friends_add():
     if form.validate_on_submit():
         # Add friends
         for friend_id in form.data.get("ids"):
+            # Create user to friend link
             db.session.add(Friend(
                 user_id=current_user.id, friend_id=friend_id
+            ))
+
+            # Create friend to user link
+            db.session.add(Friend(
+                user_id=friend_id, friend_id=current_user.id
             ))
 
         # Commit remaining changes
@@ -40,10 +46,18 @@ def friends_delete():
     if form.validate_on_submit():
         # Delete friends
         for friend_id in form.data.get("ids"):
+            # Delete user to friend link
             db.session.query(
                 Friend
             ).filter(
                 Friend.user_id == current_user.id, Friend.friend_id == friend_id
+            ).delete()
+
+            # Delete friend to user link
+            db.session.query(
+                Friend
+            ).filter(
+                Friend.user_id == friend_id, Friend.friend_id == current_user.id
             ).delete()
 
         # Commit remaining changes

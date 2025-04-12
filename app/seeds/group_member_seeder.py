@@ -4,9 +4,15 @@ from app.models.group_members import GroupMember
 
 def seed_group_members():
     group_members = [
-        GroupMember(group_id=1, user_id=1),
+        # id = 1 (U1 + U2 + U3 + U4)
         GroupMember(group_id=1, user_id=2),
+        GroupMember(group_id=1, user_id=3),
+        GroupMember(group_id=1, user_id=4),
+        GroupMember(group_id=1, user_id=5),
+
+        # id = 2 (U2 + U3)
         GroupMember(group_id=2, user_id=3),
+        GroupMember(group_id=2, user_id=4),
     ]
 
     db.session.bulk_save_objects(group_members)

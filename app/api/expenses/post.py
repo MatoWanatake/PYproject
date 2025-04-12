@@ -38,7 +38,7 @@ def groups_post():
         # Add debits for the expenses
         for debit in form.data.get("debits"):
             db.session.add(ExpenseDebit(
-                expense_id=expense.id, user_id=debit.get("id"), amount=debit.get("amount")
+                expense_id=expense.id, user_id=debit.get("user_id"), amount=debit.get("amount")
             ))
 
         # Commit remaining changes

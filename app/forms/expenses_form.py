@@ -13,12 +13,13 @@ class ExpensesPostForm(BaseForm):
     title = StringField("title", validators=[Required(), Length(min=1, max=50)])
     amount = FloatField("amount",
                         validators=[Required(), NumberRange(min=0.0, message="Value must be greater than 0.0")])
-    group_id = IntegerField("group_id", validators=[Required()])
+    group_id = IntegerField("group_id", validators=[])
     debits = PassThroughField("debits", validators=[ArrayOfDebits(), ExpenseDebits()])
 
 
 class ExpensesPutForm(BaseForm):
-    title = StringField("title", validators=[Required(), Length(min=1, max=100)])
+    title = StringField("title", validators=[Required(), Length(min=1, max=50)])
     amount = FloatField("amount",
                         validators=[Required(), NumberRange(min=0.0, message="Value must be greater than 0.0")])
-    description = StringField("description", validators=[])
+    group_id = IntegerField("group_id", validators=[])
+    debits = PassThroughField("debits", validators=[ArrayOfDebits(), ExpenseDebits()])
