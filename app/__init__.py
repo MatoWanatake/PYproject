@@ -82,7 +82,7 @@ app.register_blueprint(groups_post_blueprint, url_prefix=group_url_prefix)
 app.register_blueprint(groups_put_blueprint, url_prefix=group_url_prefix)
 app.register_blueprint(groups_delete_blueprint, url_prefix=group_url_prefix)
 
-# Group Memebers
+# Group Members
 app.register_blueprint(group_members_get_blueprint, url_prefix='/api/groups')
 app.register_blueprint(group_members_post_blueprint, url_prefix='/api/groups')
 
@@ -92,6 +92,7 @@ Migrate(app, db)
 # Application Security
 CORS(app)
 
+
 # Make sure the sqlite respects foreign key actions
 # https://stackoverflow.com/a/15542046
 @event.listens_for(Engine, "connect")
@@ -100,7 +101,6 @@ def _set_sqlite_pragma(dbapi_connection, _):
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_keys=ON;")
         cursor.close()
-
 
 
 # Since we are deploying with Docker and Flask,
@@ -135,9 +135,9 @@ def api_help():
     Returns all API routes and their doc strings
     """
     acceptable_methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
-    route_list = { rule.rule: [[ method for method in rule.methods if method in acceptable_methods ],
-                    app.view_functions[rule.endpoint].__doc__ ]
-                    for rule in app.url_map.iter_rules() if rule.endpoint != 'static' }
+    route_list = {rule.rule: [[method for method in rule.methods if method in acceptable_methods],
+                              app.view_functions[rule.endpoint].__doc__]
+                  for rule in app.url_map.iter_rules() if rule.endpoint != 'static'}
     return route_list
 
 
