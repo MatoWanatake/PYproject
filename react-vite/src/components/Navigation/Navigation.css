@@ -1,3 +1,43 @@
-.profile-dropdown {
-  position: absolute;
+.navigation {
+    button {
+        display: inline-block;
+        width: 125px;
+        margin-right: 10px;
+    }
+
+    button:last-child {
+        margin-right: 0;
+    }
+
+    .logged-in {
+        .icons {
+            cursor: pointer;
+            margin-top: 10px;
+
+            .user-icon {
+                margin-right: 10px;
+            }
+        }
+
+        .links {
+            margin-top: 10px;
+
+            .username {
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            a {
+                color: #fff;
+                display: block;
+                margin-bottom: 10px;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            a:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
 }

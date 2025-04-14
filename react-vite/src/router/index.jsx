@@ -1,6 +1,4 @@
-import {createBrowserRouter, defer, Link} from 'react-router-dom';
-import LoginFormPage from '../components/LoginFormPage';
-import SignupFormPage from '../components/SignupFormPage';
+import {createBrowserRouter, defer} from 'react-router-dom';
 import Layout from './Layout';
 import Example from "../components/Example/index.js";
 import FriendTransactions from "../components/FriendTransactions/index.js";
@@ -12,18 +10,19 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <>
-                    <h1>Welcome!</h1>
-                    <Link to="/example">Example</Link>
-                </>,
+                element: <></>
             },
             {
-                path: "/login",
-                element: <LoginFormPage/>,
+                path: "/friends",
+                element: <>Friends</>
             },
             {
-                path: "/signup",
-                element: <SignupFormPage/>,
+                path: "/groups",
+                element: <>Groups</>
+            },
+            {
+                path: "/transactions",
+                element: <>Transactions</>
             },
             {
                 path: "/example",
@@ -38,9 +37,9 @@ export const router = createBrowserRouter([
                 children: [
                     {
                         path: "group/:id",
-                        element:<GroupTransactions/>,
+                        element: <GroupTransactions/>,
                         //https://reactrouter.com/6.30.0/route/loader
-                        loader: async ({ params }) => {
+                        loader: async ({params}) => {
                             return defer({
                                 data: fetch(`/api/expense-group/${params.id}`).then(res => res.json()),
                             })
@@ -50,7 +49,7 @@ export const router = createBrowserRouter([
                         path: "friend/:id",
                         element: <FriendTransactions/>,
                         //https://reactrouter.com/6.30.0/route/loader
-                        loader: async ({ params }) => {
+                        loader: async ({params}) => {
                             return defer({
                                 data: fetch(`/api/expense-friend/${params.id}`).then(res => res.json()),
                             })
