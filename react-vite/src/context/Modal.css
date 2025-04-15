@@ -38,5 +38,9 @@
         header {
             margin-bottom: 10px;
         }
+
+        p.error {
+            color: red;
+        }
     }
 }

@@ -58,7 +58,7 @@ function LoginFormModal() {
                     required
                     placeholder="Email"
                 />
-                {errors.email && <p>{errors.email}</p>}
+                {errors.email && <p className="error">{errors.email}</p>}
             </div>
             <div className="row">
                 <label htmlFor="password">Password</label>
@@ -70,7 +70,7 @@ function LoginFormModal() {
                     required
                     placeholder="Password"
                 />
-                {errors.password && <p>{errors.password}</p>}
+                {errors.password && <p className="error">{errors.password}</p>}
             </div>
             <div className="row full">
                 <button type="submit">Log In</button>
