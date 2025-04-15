@@ -9,6 +9,8 @@ import LoginFormModal from "../LoginFormModal/index.js";
 function SignupFormModal() {
     const {setModalContent} = useModal();
     const dispatch = useDispatch();
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -32,6 +34,8 @@ function SignupFormModal() {
 
         dispatch(
             thunkSignup({
+                "first_name": firstName,
+                "last_name": lastName,
                 email,
                 username,
                 password,
@@ -54,16 +58,40 @@ function SignupFormModal() {
             {errors.server && <p>{errors.server}</p>}
             <form className="form" onSubmit={handleSubmit}>
                 <div className="row">
+                    <label htmlFor="firstName">First Name</label>
+                    <input
+                        name="firstName"
+                        type="text"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                        placeholder="First Name"
+                    />
+                    {errors.first_name && <p className="error">{errors.first_name}</p>}
+                </div>
+                <div className="row">
+                    <label htmlFor="lastName">Last Name</label>
+                    <input
+                        name="lastName"
+                        type="text"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        required
+                        placeholder="Last Name"
+                    />
+                    {errors.last_name && <p className="error">{errors.last_name}</p>}
+                </div>
+                <div className="row">
                     <label htmlFor="email">Email</label>
                     <input
                         name="email"
-
                         type="text"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        placeholder="Email"
                     />
-                    {errors.email && <p>{errors.email}</p>}
+                    {errors.email && <p className="error">{errors.email}</p>}
                 </div>
                 <div className="row">
                     <label htmlFor="username">Username</label>
@@ -73,8 +101,9 @@ function SignupFormModal() {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
+                        placeholder="Username"
                     />
-                    {errors.username && <p>{errors.username}</p>}
+                    {errors.username && <p className="error">{errors.username}</p>}
                 </div>
                 <div className="row">
                     <label htmlFor="password">Password</label>
@@ -84,8 +113,9 @@ function SignupFormModal() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        placeholder="Password"
                     />
-                    {errors.password && <p>{errors.password}</p>}
+                    {errors.password && <p className="error">{errors.password}</p>}
                 </div>
                 <div className="row">
                     <label htmlFor="confirmPassword">Confirm Password</label>
@@ -95,8 +125,9 @@ function SignupFormModal() {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
+                        placeholder="Confirm Password"
                     />
-                    {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+                    {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
                 </div>
                 <div className="row full">
                     <button type="submit">Sign Up</button>
