@@ -4,6 +4,7 @@ import {useDispatch} from "react-redux";
 import {useModal} from "../../context/Modal";
 import "./LoginForm.css";
 import logo from "../../router/split-bill-logo.png";
+import {useNavigate} from "react-router-dom";
 
 // Should be in sync user_seeder.py
 const users = [{
@@ -17,6 +18,7 @@ const users = [{
 }];
 
 function LoginFormModal() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -37,6 +39,7 @@ function LoginFormModal() {
                 setErrors(response);
             } else {
                 closeModal();
+                navigate("/dashboard");
             }
         });
     }

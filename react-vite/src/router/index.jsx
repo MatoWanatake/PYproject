@@ -13,6 +13,10 @@ export const router = createBrowserRouter([
                 element: <></>
             },
             {
+                path: "/dashboard",
+                element: <>Dashboard</>
+            },
+            {
                 path: "/friends",
                 element: <>Friends</>
             },

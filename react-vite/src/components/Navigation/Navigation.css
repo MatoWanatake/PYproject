@@ -38,6 +38,10 @@
             a:last-child {
                 margin-bottom: 0;
             }
+
+            a.active {
+                text-decoration: underline;
+            }
         }
     }
 }
