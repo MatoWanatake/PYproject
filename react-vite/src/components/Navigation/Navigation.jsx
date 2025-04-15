@@ -3,12 +3,13 @@ import {useModal} from "../../context/Modal.jsx";
 import LoginFormModal from "../LoginFormModal/index.js";
 import SignupFormModal from "../SignupFormModal/index.js";
 import {useDispatch, useSelector} from "react-redux";
-import {FaAngleDown, FaUserCircle} from "react-icons/fa";
-import {Link} from "react-router-dom";
+import {FaAngleDown, FaAngleRight, FaUserCircle} from "react-icons/fa";
+import {NavLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {thunkLogout} from "../../redux/session.js";
 
 function Navigation() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const {closeMenu, setModalContent} = useModal();
@@ -30,22 +31,30 @@ function Navigation() {
 
         dispatch(thunkLogout())
             .then(() => closeMenu)
+            .then(() => navigate("/"));
     };
 
     return (
         <div className="navigation">
             {user ?
-                <div className="logged-in">
-                    <div className="icons" onClick={() => setHidden(!hidden)}>
+                <div
+                    className="logged-in"
+                    onClick={() => setHidden(!hidden)}
+                    onMouseLeave={() => setHidden(true)}
+                >
+                    <div className="icons">
                         <FaUserCircle size="48" className="user-icon"/>
-                        <FaAngleDown size="48" className="down-icon"/>
+                        {hidden ?
+                            <FaAngleRight size="48" className="down-icon"/> :
+                            <FaAngleDown size="48" className="down-icon"/>
+                        }
                     </div>
                     <div className="links" hidden={hidden} onClick={() => setHidden(true)}>
                         <p className="username">{user.username}</p>
-                        <Link to="/friends">Friends</Link>
-                        <Link to="/groups">Groups</Link>
-                        <Link to="/transactions">Transaction</Link>
-                        <button  className="text non-bold" onClick={event => logout(event)}>
+                        <NavLink to="/friends">Friends</NavLink>
+                        <NavLink to="/groups">Groups</NavLink>
+                        <NavLink to="/transactions">Transaction</NavLink>
+                        <button className="text non-bold" onClick={event => logout(event)}>
                             Log Out
                         </button>
                     </div>

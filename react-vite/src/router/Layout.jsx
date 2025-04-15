@@ -1,16 +1,19 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {Outlet} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Modal, ModalProvider} from "../context/Modal";
 import {thunkAuthenticate} from "../redux/session";
 import Navigation from "../components/Navigation/Navigation";
 import logo from "./split-bill-logo.png";
+import background from "./home-page.png"
 
 export default function Layout() {
     const dispatch = useDispatch();
-    const [isLoaded, setIsLoaded] = useState(false);
+
+    const user = useSelector((store) => store.session.user);
+
     useEffect(() => {
-        dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
+        dispatch(thunkAuthenticate())
     }, [dispatch]);
 
     return (
@@ -20,7 +23,7 @@ export default function Layout() {
                     <img className="logo" src={logo} alt="Split Bill" />
                 </div>
                 <div className="column content">
-                    {isLoaded && <Outlet/>}
+                    {user ? <Outlet/> : <img className="background" src={background} alt="Split Bill" />}
                 </div>
                 <div className="column navigation">
                     <Navigation/>
