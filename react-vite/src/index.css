@@ -28,29 +28,6 @@ html, body {
     font-weight: normal;
 }
 
-.container {
-    display: grid;
-    grid-template-columns: 300px minmax(300px, 1fr) 300px;
-}
-
-.column {
-    padding: 16px;
-    text-align: center;
-}
-
-.column.logo {
-    .logo {
-        width: 175px;
-    }
-}
-
-.column.content {
-    .background {
-        width: 100%;
-        margin-top: 50px;
-    }
-}
-
 .form {
     display: flex;
     flex-direction: column;
@@ -80,6 +57,10 @@ button {
 button.secondary {
     background-color: #0e41da;
     color: #ffff;
+}
+
+button.tertiary {
+    background-color: #f2e002;
 }
 
 button.text {

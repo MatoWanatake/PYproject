@@ -1,0 +1,25 @@
+.layout {
+    .container {
+        display: grid;
+        grid-template-columns: 300px minmax(300px, 1fr) 300px;
+    }
+
+    .column {
+        padding: 16px;
+        text-align: center;
+    }
+
+    .column.logo {
+        .logo {
+            width: 175px;
+        }
+    }
+
+    .column.content {
+        margin-top: 34px;
+    }
+
+    .column.navigation {
+        margin-top: 34px;
+    }
+}

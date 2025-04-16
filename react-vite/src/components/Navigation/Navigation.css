@@ -12,7 +12,7 @@
     .logged-in {
         .icons {
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 2px;
 
             .user-icon {
                 margin-right: 10px;
@@ -43,5 +43,9 @@
                 text-decoration: underline;
             }
         }
+    }
+
+    .logged-out {
+        margin-top: 30px;
     }
 }

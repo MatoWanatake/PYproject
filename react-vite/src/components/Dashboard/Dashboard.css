@@ -1,0 +1,23 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-bottom: 20px;
+
+        .active {
+            text-decoration: underline;
+        }
+    }
+
+    hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(to right, transparent, white, transparent);
+        width: 75%;
+        margin-bottom: 20px;
+    }
+}

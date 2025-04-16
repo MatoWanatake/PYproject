@@ -51,8 +51,8 @@ function Navigation() {
                     </div>
                     <div className="links" hidden={hidden} onClick={() => setHidden(true)}>
                         <p className="username">{user.username}</p>
-                        <NavLink to="/friends">Friends</NavLink>
-                        <NavLink to="/groups">Groups</NavLink>
+                        <NavLink to="/dashboard">Dashboard</NavLink>
+                        <NavLink to="/friendship">Friendship</NavLink>
                         <NavLink to="/transactions">Transaction</NavLink>
                         <button className="text non-bold" onClick={event => logout(event)}>
                             Log Out

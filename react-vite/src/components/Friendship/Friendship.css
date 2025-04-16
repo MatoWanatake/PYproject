@@ -1,0 +1,50 @@
+.friendship {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-bottom: 20px;
+
+        .active {
+            text-decoration: underline;
+        }
+    }
+
+    hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(to right, transparent, white, transparent);
+        width: 75%;
+        margin-bottom: 20px;
+    }
+
+    .container {
+        display: block;
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 150px));
+            gap: 20px;
+            padding: 20px;
+
+            .item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 150px;
+                height: 150px;
+
+                .icon {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        .add {
+            cursor: pointer;
+        }
+    }
+}
