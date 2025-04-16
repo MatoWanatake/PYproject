@@ -16,8 +16,8 @@ function Credit() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
-    const handleInputChange = (e) => {
-        const {name, value} = e.target;
+    const handleInputChange = (event) => {
+        const {name, value} = event.target;
         setFormData({...formData, [name]: value});
     };
 
@@ -70,7 +70,7 @@ function Credit() {
 
     //The HTML that makes up the component
     return (
-        <div className={'credit'}>
+        <div className="credit">
             <h1>Create an Expense Credit</h1>
             {message && <div className="message">{message}</div>}
             <form onSubmit={handleSubmit}>

@@ -2,11 +2,11 @@ import {Suspense, useEffect} from 'react';
 import {Await, Outlet, useLoaderData, useNavigate} from 'react-router-dom';
 
 import './Example.css';
-import Friends from "../Friends/index.js";
-import Groups from "../Groups/index.js";
+import Friends from "../Friends";
+import Groups from "../Groups";
 import {useSelector} from "react-redux";
-import Credit from "../Credit/index.js";
-import Expense from "../Expense/index.js";
+import Credit from "../Credit";
+import Expense from "../Expense";
 
 function Example() {
     //Get navigation hook
@@ -27,7 +27,7 @@ function Example() {
 
     //The HTML that makes up the component
     return (
-        <div className={'example'}>
+        <div className="example">
             <div>
                 <h1>Groups</h1>
                 <Suspense fallback={<h1>Loading...</h1>}>

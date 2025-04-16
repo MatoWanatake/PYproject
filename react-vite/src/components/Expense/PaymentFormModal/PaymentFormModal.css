@@ -1,0 +1,27 @@
+.payment-form-modal {
+    display: flex;
+
+    p {
+        margin-bottom: 20px
+    }
+
+    .cash {
+        color: #f2e002;
+        background-color: #0d1e4c;
+    }
+
+    .image-button {
+        img {
+            width: 200px;
+            height: 25px;
+        }
+    }
+
+    .venmo {
+        background-color: #9ebdfe;
+    }
+
+    .paypal {
+        background-color: #fff;
+    }
+}

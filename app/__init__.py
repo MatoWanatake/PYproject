@@ -14,14 +14,15 @@ from .api.expense_credits import expense_credits_get_blueprint, expense_credits_
     expense_credits_put_blueprint, expense_credits_delete_blueprint
 from .api.expense_debits import expense_debits_get_blueprint, expense_debits_post_blueprint, \
     expense_debits_put_blueprint, expense_debits_delete_blueprint
-from .api.expense_friend import expenses_friend_get_blueprint
-from .api.expense_group.get import expenses_group_get_blueprint
+from .api.expense_friends import expenses_friend_get_blueprint
+from .api.expense_groups.get import expenses_group_get_blueprint
 from .api.expenses import expenses_get_blueprint, expenses_post_blueprint, expenses_put_blueprint, \
     expenses_delete_blueprint
 from .api.friends import friends_get_blueprint, friends_post_blueprint
 from .api.group_members import group_members_get_blueprint, group_members_post_blueprint
 from .api.groups import groups_get_blueprint, groups_post_blueprint, groups_put_blueprint, groups_delete_blueprint
 from .api.user_routes import user_routes
+from .api.users import users_get_blueprint
 from .config import Config
 from .models import db, User
 from .seeds import seed_commands
@@ -45,6 +46,9 @@ app.config.from_object(Config)
 
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
+
+# Users
+app.register_blueprint(users_get_blueprint, url_prefix='/api/users')
 
 # Friends
 app.register_blueprint(friends_get_blueprint, url_prefix='/api/friends')

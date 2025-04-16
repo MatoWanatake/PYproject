@@ -1,10 +1,10 @@
 import {createBrowserRouter, defer} from 'react-router-dom';
 import Layout from './Layout';
-import Example from "../components/Example/index.js";
-import FriendTransactions from "../components/FriendTransactions/index.js";
-import GroupTransactions from "../components/GroupTransactions/index.js";
-import Dashboard from "../components/Dashboard/index.js";
-import Friendship from "../components/Friendship/index.js";
+import Example from "../components/Example";
+import FriendTransactions from "../components/FriendTransactions";
+import GroupTransactions from "../components/GroupTransactions";
+import Dashboard from "../components/Dashboard";
+import Friendship from "../components/Friendship";
 
 export const router = createBrowserRouter([
     {
@@ -17,17 +17,18 @@ export const router = createBrowserRouter([
             {
                 path: "/dashboard",
                 element: <Dashboard/>,
+                //https://reactrouter.com/6.30.0/route/loader
+                loader: async () => {
+                    return defer({
+                        balances: fetch('/api/users/balance').then(res => res.json()),
+                        debits: fetch('/api/expenses/debits').then(res => res.json()),
+                        //credits: fetch('/api/expense/credits').then(res => res.json()),
+                    })
+                },
             },
             {
                 path: "/friendship",
                 element: <Friendship/>,
-                //https://reactrouter.com/6.30.0/route/loader
-                loader: async () => {
-                    return defer({
-                        groups: fetch('/api/groups').then(res => res.json()),
-                        friends: fetch('/api/friends').then(res => res.json()),
-                    })
-                },
             },
             {
                 path: "/transactions",

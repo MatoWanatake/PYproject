@@ -4,7 +4,7 @@ import {nanoid} from "nanoid";
 function Transactions({data}) {
     //The HTML that makes up the component
     return (
-        <div className={'transactions'}>
+        <div className="transactions">
             <h2>Expenses</h2>
             <ul>
                 {

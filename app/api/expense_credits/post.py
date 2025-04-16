@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 
-from app.api.expense_friend.get import is_friend
+from app.api.expense_friends.get import is_friend
 from app.api.groups.get import valid_group
 from app.forms.expense_credits_form import ExpenseCreditsPostForm
 from app.models import db, ExpenseCredit
@@ -38,7 +38,7 @@ def expense_credits_post():
             group_id=form.data.get("group_id")
         )
 
-        # Add group to the transaction and flush so the primary key is generated
+        # Add credit
         db.session.add(credit)
 
         # Commit remaining changes
