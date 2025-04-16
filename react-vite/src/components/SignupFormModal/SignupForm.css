@@ -1,0 +1,15 @@
+.signup-form-modal {
+    width: 275px;
+
+    header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .logo {
+            width: 100px;
+            margin-left: 4px;
+            margin-top: 10px;
+        }
+    }
+}

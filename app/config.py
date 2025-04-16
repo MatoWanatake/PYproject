@@ -2,6 +2,7 @@ import os
 
 
 class Config:
+    SCHEMA = os.environ.get('SCHEMA')
     SECRET_KEY = os.environ.get('SECRET_KEY')
     FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -12,3 +13,9 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL').replace('postgres://', 'postgresql://')
     SQLALCHEMY_ECHO = True
+
+    # Set search path
+    if SQLALCHEMY_DATABASE_URI.startswith('postgresql'):
+        SQLALCHEMY_ENGINE_OPTIONS = {
+            'connect_args': {'options': f"-csearch_path={SCHEMA},public"}
+        }

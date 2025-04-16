@@ -19,8 +19,8 @@ class Expense(db.Model):
     # Relationships
     user = db.relationship("User", back_populates="expenses")
     group = db.relationship("Group", back_populates="expenses")
-    comments = db.relationship("Comment", back_populates="expense", lazy=True)
-    debits = db.relationship("ExpenseDebit", back_populates="expense", lazy=True)
+    comments = db.relationship("Comment", back_populates="expense", cascade="all, delete-orphan", passive_deletes=True)
+    debits = db.relationship("ExpenseDebit", back_populates="expense", cascade="all, delete-orphan", passive_deletes=True)
 
     def to_dict(self):
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}

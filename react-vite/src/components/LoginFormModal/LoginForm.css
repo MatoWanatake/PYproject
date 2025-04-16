@@ -1,0 +1,17 @@
+.login-form-modal {
+    width: 275px;
+
+    .logo {
+        width: 100px;
+    }
+
+    .quick-login {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+
+        button {
+            width: 130px;
+        }
+    }
+}

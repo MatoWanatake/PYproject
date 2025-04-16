@@ -18,17 +18,18 @@ class User(db.Model, UserMixin):
     updated_at = db.Column(db.DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())
 
     # Relationships
-    friends = db.relationship("Friend", primaryjoin="User.id == Friend.user_id", back_populates="user", lazy="dynamic")
-    friend_of = db.relationship("Friend", primaryjoin="User.id == Friend.friend_id", back_populates="friend",
-                                lazy="dynamic")
-    groups = db.relationship("GroupMember", back_populates="user", lazy=True)
-    expenses = db.relationship("Expense", back_populates="user", lazy=True)
-    comments = db.relationship("Comment", back_populates="user", lazy=True)
-    debits = db.relationship("ExpenseDebit", back_populates="user", lazy=True)
+    friends = db.relationship("Friend", primaryjoin="User.id == Friend.user_id", back_populates="user",
+                              cascade="all, delete-orphan", passive_deletes=True)
+    friend_of = db.relationship("Friend", primaryjoin="User.id == Friend.friend_id", back_populates="friend")
+    groups = db.relationship("GroupMember", back_populates="user")
+    expenses = db.relationship("Expense", back_populates="user", cascade="all, delete-orphan",
+                               passive_deletes=True)
+    comments = db.relationship("Comment", back_populates="user", cascade="all, delete-orphan", passive_deletes=True)
+    debits = db.relationship("ExpenseDebit", back_populates="user", cascade="all, delete-orphan", passive_deletes=True)
     credits_paid = db.relationship("ExpenseCredit", foreign_keys="ExpenseCredit.paid_by", back_populates="payer",
-                                   lazy=True)
+                                   cascade="all, delete-orphan", passive_deletes=True)
     credits_received = db.relationship("ExpenseCredit", foreign_keys="ExpenseCredit.paid_to",
-                                       back_populates="recipient", lazy=True)
+                                       back_populates="recipient", cascade="all, delete-orphan", passive_deletes=True)
 
     @property
     def password(self):
@@ -41,6 +42,10 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
-    def to_dict(self):
+    def to_dict(self, terse=False):
+        if terse:
+            return {column.name: getattr(self, column.name) for column in self.__table__.columns if
+                    column.name not in {'email', 'password_hash', 'created_at', 'updated_at'}}
+
         return {column.name: getattr(self, column.name) for column in self.__table__.columns if
                 column.name != 'password_hash'}
