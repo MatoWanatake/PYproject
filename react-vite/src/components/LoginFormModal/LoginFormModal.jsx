@@ -18,20 +18,30 @@ const users = [{
 }];
 
 function LoginFormModal() {
-    const navigate = useNavigate();
+    //Access redux
     const dispatch = useDispatch();
+
+    //Get navigation hook
+    const navigate = useNavigate();
+
+    //Access modal handlers
+    const {closeModal} = useModal();
+
+    //State
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [errors, setErrors] = useState({});
-    const {closeModal} = useModal();
 
+    //Submit
     const handleSubmit = async (event) => {
         await login(event, email, password);
     };
 
     const login = async (event, email, password) => {
+        //Prevent default actions
         event.preventDefault();
 
+        //Persist
         dispatch(thunkLogin({
             email, password,
         })).then(response => {
@@ -44,49 +54,52 @@ function LoginFormModal() {
         });
     }
 
-    return (<div className={"login-form-modal"}>
-        <img className="logo" src={logo} alt="logo"/>
-        <header>Welcome Back!</header>
-        <form className="form" onSubmit={handleSubmit}>
-            <div className="row">
-                <label htmlFor="email">Email</label>
-                <input
-                    name="email"
-                    type="text"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    placeholder="Email"
-                />
-                {errors.email && <p className="error">{errors.email}</p>}
+    //The HTML that makes up the component
+    return (
+        <div className={"login-form-modal"}>
+            <img className="logo" src={logo} alt="logo"/>
+            <header>Welcome Back!</header>
+            <form className="form" onSubmit={handleSubmit}>
+                <div className="row">
+                    <label htmlFor="email">Email</label>
+                    <input
+                        name="email"
+                        type="text"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        required
+                        placeholder="Email"
+                    />
+                    {errors.email && <p className="error">{errors.email}</p>}
+                </div>
+                <div className="row">
+                    <label htmlFor="password">Password</label>
+                    <input
+                        name="password"
+                        type="password"
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                        required
+                        placeholder="Password"
+                    />
+                    {errors.password && <p className="error">{errors.password}</p>}
+                </div>
+                <div className="row full">
+                    <button type="submit">Log In</button>
+                </div>
+            </form>
+            <header>Quick Login</header>
+            <div className="quick-login">
+                {users.map((user) => (<button
+                    key={user.email}
+                    onClick={(event) => {
+                        login(event, user.email, user.password)
+                    }}>
+                    {user.email}
+                </button>))}
             </div>
-            <div className="row">
-                <label htmlFor="password">Password</label>
-                <input
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    placeholder="Password"
-                />
-                {errors.password && <p className="error">{errors.password}</p>}
-            </div>
-            <div className="row full">
-                <button type="submit">Log In</button>
-            </div>
-        </form>
-        <header>Quick Login</header>
-        <div className="quick-login">
-            {users.map((user) => (<button
-                key={user.email}
-                onClick={(event) => {
-                    login(event, user.email, user.password)
-                }}>
-                {user.email}
-            </button>))}
         </div>
-    </div>);
+    );
 }
 
 export default LoginFormModal;

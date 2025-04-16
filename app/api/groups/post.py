@@ -15,6 +15,9 @@ def groups_post():
 
     # Validate input
     if form.validate_on_submit():
+        # Get values
+        ids = form.data.get("ids")
+
         # Create the group
         group = Group(name=form.data.get("name"), description=form.data.get("description"))
 
@@ -24,6 +27,16 @@ def groups_post():
 
         # Add current user to the group
         db.session.add(GroupMember(group_id=group.id, user_id=current_user.id))
+
+        # Add friends (ids)
+        if ids is not None and isinstance(ids, list):
+            for friend_id in ids:
+                # You are already added to the group
+                if friend_id == current_user.id:
+                    continue
+
+                # Create user to friend link
+                db.session.add(GroupMember(group_id=group.id, user_id=friend_id))
 
         # Commit all changes
         db.session.commit()

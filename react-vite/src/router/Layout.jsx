@@ -4,7 +4,7 @@ import {Modal, ModalProvider} from "../context/Modal";
 import {thunkAuthenticate} from "../redux/session";
 import Navigation from "../components/Navigation/Navigation";
 import logo from "./split-bill-logo.png";
-import Content from "../components/Content/index.js";
+import Content from "../components/Content";
 import './Layout.css';
 
 export default function Layout() {

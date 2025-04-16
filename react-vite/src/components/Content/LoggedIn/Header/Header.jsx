@@ -1,7 +1,7 @@
 import './Header.css';
 import {useModal} from "../../../../context/Modal.jsx";
-import ExpenseFormModal from "../../../ExpenseFormModal/index.js";
-import PaymentFormModal from "../../../PaymentFormModal/index.js";
+import ExpenseFormModal from "../../../Expense/ExpenseFormModal";
+import PaymentFormModal from "../../../Expense/PaymentFormModal";
 
 function Header() {
     //Access modal handlers
@@ -27,7 +27,7 @@ function Header() {
 
     //The HTML that makes up the component
     return (
-        <div className={'header'}>
+        <div className="header">
             <header>
                 <div className="title">Dashboard</div>
                 <div className="buttons">

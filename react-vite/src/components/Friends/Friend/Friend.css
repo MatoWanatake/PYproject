@@ -1,0 +1,12 @@
+.friend {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+
+    .icon {
+        margin-bottom: 10px;
+    }
+}

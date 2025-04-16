@@ -1,58 +1,42 @@
-import {Suspense, useEffect, useState} from 'react';
-import {Await, useLoaderData, useNavigate} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import './Friendship.css';
-import {useSelector} from "react-redux";
-import {FaCat} from "react-icons/fa6";
-import {GiCat} from "react-icons/gi";
-import {useModal} from "../../context/Modal.jsx";
-import FriendForm from "./FriendForm/index.js";
-import GroupForm from "./GroupForm/index.js";
+import {useDispatch, useSelector} from "react-redux";
+import {getFriends, getGroups} from "../../redux/user.js";
+import Friends from "../Friends";
+import Groups from "../Groups";
 
 function Friendship() {
-    //Access modal handlers
-    const {setModalContent} = useModal();
+    //Access redux
+    const dispatch = useDispatch();
 
     //Get navigation hook
     const navigate = useNavigate();
 
-    //Get data from the loader
-    const data = useLoaderData();
-
-    //Get user from store
+    //Get data from store
     const user = useSelector((store) => store.session.user);
+    const friends = useSelector((store) => store.user.friends);
+    const groups = useSelector((store) => store.user.groups);
 
     //State
     const [active, setActive] = useState("friends");
 
-    //Add friend
-    const friend = event => {
-        //Prevent default actions
-        event.preventDefault();
-
-        //Show modal
-        setModalContent(<FriendForm/>)
-    }
-
-    //Add Group
-    const group = event => {
-        //Prevent default actions
-        event.preventDefault();
-
-        //Show modal
-        setModalContent(<GroupForm/>)
-    }
-
-    //Abort if not signed in
+    //Abort if not signed in otherwise load data
     useEffect(() => {
+        //Abort if not signed in
         if (!user) {
             navigate('/');
         }
-    }, [navigate, user])
+
+        //Load data
+        dispatch(getFriends())
+        dispatch(getGroups())
+    }, [navigate, dispatch, user])
 
     //The HTML that makes up the component
     return (
-        <div className={'friendship'}>
+        <div className="friendship">
             <header>
                 <button
                     className={`text ${active === "friends" ? "active" : ""}`}
@@ -67,44 +51,10 @@ function Friendship() {
                     Groups
                 </button>
             </header>
-            <hr />
+            <hr/>
             <div className="container">
-                {active === "friends" && (
-                    <div className="grid friends">
-                        <Suspense>
-                            <Await resolve={data.friends}>
-                                {friends => friends.map(friend => (
-                                    <div key={friend.id} className="item friend">
-                                        <FaCat className="icon" />
-                                        <span className="name">{friend.username}</span>
-                                    </div>
-                                ))}
-                            </Await>
-                        </Suspense>
-                        <div className="item friend add" onClick={friend}>
-                            <FaCat className="icon" />
-                            <span className="name">Add a Friend</span>
-                        </div>
-                    </div>
-                )}
-                {active === "groups" && (
-                    <div className="grid groups">
-                        <Suspense>
-                            <Await resolve={data.groups}>
-                                {groups => groups.map(group => (
-                                    <div key={group.id} className="item group">
-                                        <GiCat className="icon" />
-                                        <span className="name">{group.name}</span>
-                                    </div>
-                                ))}
-                            </Await>
-                            <div className="item group add" onClick={group}>
-                                <GiCat className="icon" />
-                                <span className="name">Create a Group</span>
-                            </div>
-                        </Suspense>
-                    </div>
-                )}
+                {active === "friends" && (<Friends friends={friends}/>)}
+                {active === "groups" && (<Groups groups={groups}/>)}
             </div>
         </div>
     );

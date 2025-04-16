@@ -20,4 +20,38 @@
         width: 75%;
         margin-bottom: 20px;
     }
+
+    .container {
+        .owe {
+            .item {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 40px;
+
+                header {
+                    display: flex;
+                    flex-direction: row;
+                    margin-bottom: 20px;
+
+                    .icon {
+                        margin-right: 10px;
+                    }
+
+                    .who {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+                }
+
+                .description {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    margin-left: 58px;
+                }
+            }
+        }
+    }
 }

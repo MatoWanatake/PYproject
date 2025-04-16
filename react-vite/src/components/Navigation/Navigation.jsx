@@ -1,7 +1,7 @@
 import "./Navigation.css";
 import {useModal} from "../../context/Modal.jsx";
-import LoginFormModal from "../LoginFormModal/index.js";
-import SignupFormModal from "../SignupFormModal/index.js";
+import LoginFormModal from "../LoginFormModal";
+import SignupFormModal from "../SignupFormModal";
 import {useDispatch, useSelector} from "react-redux";
 import {FaAngleDown, FaAngleRight, FaUserCircle} from "react-icons/fa";
 import {NavLink, useNavigate} from "react-router-dom";

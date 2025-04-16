@@ -2,7 +2,7 @@ import {Await, useLoaderData} from 'react-router-dom';
 
 import './FriendTransactions.css';
 import {Suspense} from "react";
-import Transactions from "../Transactions/index.js";
+import Transactions from "../Transactions";
 
 function FriendTransactions() {
     //Get data from the loader
@@ -10,7 +10,7 @@ function FriendTransactions() {
 
     //The HTML that makes up the component
     return (
-        <div className={'friend-transactions'}>
+        <div className="friend-transactions">
             <div>
                 <h1>Transactions</h1>
                 <Suspense fallback={<h1>Loading...</h1>}>

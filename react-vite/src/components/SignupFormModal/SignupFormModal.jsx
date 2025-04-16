@@ -4,11 +4,16 @@ import {useModal} from "../../context/Modal";
 import {thunkSignup} from "../../redux/session";
 import "./SignupForm.css";
 import logo from "../../router/split-bill-logo.png";
-import LoginFormModal from "../LoginFormModal/index.js";
+import LoginFormModal from "../LoginFormModal";
 
 function SignupFormModal() {
-    const {setModalContent} = useModal();
+    //Access redux
     const dispatch = useDispatch();
+
+    //Access modal handlers
+    const {setModalContent, closeModal} = useModal();
+
+    //State
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -16,15 +21,18 @@ function SignupFormModal() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState({});
-    const {closeModal} = useModal();
 
+    //Login
     const login = () => {
         setModalContent(<LoginFormModal/>);
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    //Submit
+    const handleSubmit = async (event) => {
+        //Prevent default actions
+        event.preventDefault();
 
+        //Validate
         if (password !== confirmPassword) {
             return setErrors({
                 confirmPassword:
@@ -32,6 +40,7 @@ function SignupFormModal() {
             });
         }
 
+        //Persists
         dispatch(
             thunkSignup({
                 "first_name": firstName,
@@ -49,6 +58,7 @@ function SignupFormModal() {
         });
     };
 
+    //The HTML that makes up the component
     return (
         <div className="signup-form-modal">
             <header>
@@ -63,7 +73,7 @@ function SignupFormModal() {
                         name="firstName"
                         type="text"
                         value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
+                        onChange={(event) => setFirstName(event.target.value)}
                         required
                         placeholder="First Name"
                     />
@@ -75,7 +85,7 @@ function SignupFormModal() {
                         name="lastName"
                         type="text"
                         value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
+                        onChange={(event) => setLastName(event.target.value)}
                         required
                         placeholder="Last Name"
                     />
@@ -87,7 +97,7 @@ function SignupFormModal() {
                         name="email"
                         type="text"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(event) => setEmail(event.target.value)}
                         required
                         placeholder="Email"
                     />
@@ -99,7 +109,7 @@ function SignupFormModal() {
                         name="username"
                         type="text"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        onChange={(event) => setUsername(event.target.value)}
                         required
                         placeholder="Username"
                     />
@@ -111,7 +121,7 @@ function SignupFormModal() {
                         name="password"
                         type="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(event) => setPassword(event.target.value)}
                         required
                         placeholder="Password"
                     />
@@ -123,7 +133,7 @@ function SignupFormModal() {
                         name="confirmPassword"
                         type="password"
                         value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        onChange={(event) => setConfirmPassword(event.target.value)}
                         required
                         placeholder="Confirm Password"
                     />

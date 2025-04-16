@@ -34,8 +34,8 @@ function Expense() {
         setDebits(updatedDebits);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         setLoading(true);
         setMessage("");
 
@@ -82,7 +82,7 @@ function Expense() {
 
     //The HTML that makes up the component
     return (
-        <div className={'expense'}>
+        <div className="expense">
             <h1>Create Expense</h1>
             {message && <div className="message">{message}</div>}
             <form onSubmit={handleSubmit}>
@@ -92,7 +92,7 @@ function Expense() {
                         type="text"
                         id="title"
                         value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        onChange={(event) => setTitle(event.target.value)}
                         required
                     />
                 </div>
@@ -102,7 +102,7 @@ function Expense() {
                         type="number"
                         id="amount"
                         value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
+                        onChange={(event) => setAmount(event.target.value)}
                         required
                         step="0.01"
                     />
@@ -113,7 +113,7 @@ function Expense() {
                         type="text"
                         id="groupId"
                         value={groupId}
-                        onChange={(e) => setGroupId(e.target.value)}
+                        onChange={(event) => setGroupId(event.target.value)}
                     />
                 </div>
                 <div>
@@ -124,14 +124,14 @@ function Expense() {
                                 type="number"
                                 placeholder="User ID"
                                 value={debit.user_id}
-                                onChange={(e) => handleDebitChange(index, "user_id", e.target.value)}
+                                onChange={(event) => handleDebitChange(index, "user_id", event.target.value)}
                                 required
                             />
                             <input
                                 type="number"
                                 placeholder="Amount"
                                 value={debit.amount}
-                                onChange={(e) => handleDebitChange(index, "amount", e.target.value)}
+                                onChange={(event) => handleDebitChange(index, "amount", event.target.value)}
                                 required
                                 step="0.01"
                             />
