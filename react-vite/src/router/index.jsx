@@ -3,6 +3,8 @@ import Layout from './Layout';
 import Example from "../components/Example/index.js";
 import FriendTransactions from "../components/FriendTransactions/index.js";
 import GroupTransactions from "../components/GroupTransactions/index.js";
+import Dashboard from "../components/Dashboard/index.js";
+import Friendship from "../components/Friendship/index.js";
 
 export const router = createBrowserRouter([
     {
@@ -10,23 +12,26 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <></>
+                element: <></>,
             },
             {
                 path: "/dashboard",
-                element: <>Dashboard</>
+                element: <Dashboard/>,
             },
             {
-                path: "/friends",
-                element: <>Friends</>
-            },
-            {
-                path: "/groups",
-                element: <>Groups</>
+                path: "/friendship",
+                element: <Friendship/>,
+                //https://reactrouter.com/6.30.0/route/loader
+                loader: async () => {
+                    return defer({
+                        groups: fetch('/api/groups').then(res => res.json()),
+                        friends: fetch('/api/friends').then(res => res.json()),
+                    })
+                },
             },
             {
                 path: "/transactions",
-                element: <>Transactions</>
+                element: <>Transactions</>,
             },
             {
                 path: "/example",
