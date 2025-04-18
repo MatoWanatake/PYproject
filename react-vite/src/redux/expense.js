@@ -4,18 +4,29 @@ import {getBalance} from "./user.js";
 
 //Action Types
 const EXPENSE_CLEAR = 'expense/clear';
+const EXPENSE_COMMENTS = 'expense/comments';
 
 //Actions
-const creditExpenseAction = () => {
+const expenseClearAction = () => {
     return {
         type: EXPENSE_CLEAR
+    }
+}
+
+const expenseGetCommentsAction = (id, comments) => {
+    return {
+        type: EXPENSE_COMMENTS,
+        payload: {
+            id,
+            comments
+        }
     }
 }
 
 //Thunks
 export const clear = () => {
     return async (dispatch) => {
-        return dispatch(creditExpenseAction());
+        return dispatch(expenseClearAction());
     }
 }
 
@@ -37,19 +48,93 @@ export const addExpense = ({title, amount, debits, group_id = ""}) => {
     }
 }
 
+export const editExpense = ({id, title, amount, debits, group_id = ""}) => {
+    //Create post body with two required fields
+    const put = {title, amount, debits};
+
+    //Add the group when set
+    if (isNotNullOrEmpty(group_id)) {
+        put.group_id = group_id;
+    }
+
+    return async (dispatch) => {
+        return fetch(`/api/expenses/${id}`, {
+            method: "PUT",
+            body: JSON.stringify(put)
+        })
+            .then(() => dispatch(getBalance()))
+    }
+}
+
+export const deleteExpense = (id) => {
+    return async (dispatch) => {
+        return fetch(`/api/expenses/${id}`, {
+            method: "DELETE"
+        })
+            .then(() => dispatch(getBalance()))
+    }
+}
+
+export const getExpenseComments = (id) => {
+    return async (dispatch) => {
+        return fetch(`/api/expenses/${id}/comments`)
+            .then(response => response.json())
+            .then(comments => {
+                dispatch(expenseGetCommentsAction(id, comments));
+            })
+    }
+}
+
+export const addExpenseComment = ({id, comment}) => {
+    return async (dispatch) => {
+        return fetch(`/api/expenses/${id}/comments`, {
+            method: "POST",
+            body: JSON.stringify({comment})
+        })
+            .then(() => dispatch(getExpenseComments(id)))
+    }
+}
+
+export const editExpenseComment = ({expense_id, comment_id, comment}) => {
+    return async (dispatch) => {
+        return fetch(`/api/comments/${comment_id}`, {
+            method: "PUT",
+            body: JSON.stringify({comment})
+        })
+            .then(() => dispatch(getExpenseComments(expense_id)))
+    }
+}
+
+export const deleteExpenseComment = ({expense_id, comment_id}) => {
+    return async (dispatch) => {
+        return fetch(`/api/comments/${comment_id}`, {
+            method: "DELETE"
+        })
+            .then(() => dispatch(getExpenseComments(expense_id)))
+    }
+}
+
 //Initial State
 const initialState = {
-
+    comments: {}
 };
 
 //Reducer
-function creditReducer(state = initialState, action) {
+function expenseReducer(state = initialState, action) {
     switch (action.type) {
         case EXPENSE_CLEAR:
             return {...initialState};
+        case EXPENSE_COMMENTS:
+            return {
+                ...state,
+                comments: {
+                    ...state.comments,
+                    [action.payload.id]: action.payload.comments
+                }
+            }
         default:
             return state;
     }
 }
 
-export default creditReducer;
+export default expenseReducer;

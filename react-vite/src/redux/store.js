@@ -3,6 +3,8 @@ import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import userReducer from "./user.js";
 import groupReducer from "./group.js";
+import creditReducer from "./credit.js";
+import expenseReducer from "./expense.js";
 
 export const fetch = async (url, options = {}) => {
     //Default to GET if no method provided
@@ -27,9 +29,11 @@ export const fetch = async (url, options = {}) => {
 }
 
 const rootReducer = combineReducers({
+    credit: creditReducer,
+    expense: expenseReducer,
+    group: groupReducer,
     session: sessionReducer,
-    user: userReducer,
-    group: groupReducer
+    user: userReducer
 });
 
 let enhancer;

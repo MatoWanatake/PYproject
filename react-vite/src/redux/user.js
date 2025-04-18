@@ -5,6 +5,8 @@ const USER_CLEAR = 'user/clear';
 const USER_FRIENDS = 'user/friends';
 const USER_GROUPS = 'user/groups';
 const USER_BALANCE = 'user/balance';
+const USER_FRIEND_TRANSACTIONS = 'user/friend-transactions';
+const USER_GROUP_TRANSACTIONS = 'user/group-transactions';
 
 //Actions
 const userClearAction = () => {
@@ -31,6 +33,26 @@ const userBalanceAction = (balance) => {
     return {
         type: USER_BALANCE,
         payload: balance
+    }
+}
+
+const userFriendTransactionsAction = (id, transactions) => {
+    return {
+        type: USER_FRIEND_TRANSACTIONS,
+        payload: {
+            id,
+            transactions
+        }
+    }
+}
+
+const userGroupTransactionsAction = (id, transactions) => {
+    return {
+        type: USER_GROUP_TRANSACTIONS,
+        payload: {
+            id,
+            transactions
+        }
     }
 }
 
@@ -71,6 +93,26 @@ export const getBalance = () => {
     }
 }
 
+export const getFriendTransactions = (id) => {
+    return async (dispatch) => {
+        return fetch(`/api/expense-friend/${id}`)
+            .then(response => response.json())
+            .then(transactions => {
+                dispatch(userFriendTransactionsAction(id, transactions));
+            })
+    }
+}
+
+export const getGroupTransactions = (id) => {
+    return async (dispatch) => {
+        return fetch(`/api/expense-group/${id}`)
+            .then(response => response.json())
+            .then(transactions => {
+                dispatch(userGroupTransactionsAction(id, transactions));
+            })
+    }
+}
+
 export const addFriends = ({ids = [], emails = []}) => {
     return async (dispatch) => {
         return fetch("/api/friends/add", {
@@ -106,6 +148,10 @@ const initialState = {
         owe: 0,
         owed: 0,
         users: {}
+    },
+    transactions: {
+        friends: {},
+        groups: {}
     }
 };
 
@@ -120,6 +166,28 @@ function userReducer(state = initialState, action) {
             return {...state, groups: action.payload};
         case USER_BALANCE:
             return {...state, balance: action.payload};
+        case USER_FRIEND_TRANSACTIONS:
+            return {
+                ...state,
+                transactions: {
+                    ...state.transactions,
+                    friends: {
+                        ...state.transactions.friends,
+                        [action.payload.id]: action.payload.transactions
+                    }
+                }
+            };
+            case USER_GROUP_TRANSACTIONS:
+                return {
+                    ...state,
+                    transactions: {
+                        ...state.transactions,
+                        groups: {
+                            ...state.transactions.groups,
+                            [action.payload.id]: action.payload.transactions
+                        }
+                    }
+                }
         default:
             return state;
     }

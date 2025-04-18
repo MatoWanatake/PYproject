@@ -1,7 +1,7 @@
 import {fetch} from "./store.js";
 
 //Action Types
-const GROUP_CLEAR = 'credit/clear';
+const GROUP_CLEAR = 'group/clear';
 const GROUP_MEMBERS = 'group/members';
 
 //Actions
@@ -49,7 +49,13 @@ function groupReducer(state = initialState, action) {
         case GROUP_CLEAR:
             return {...initialState};
         case GROUP_MEMBERS:
-            return {...state, members: {...state.members, [action.payload.id]: action.payload.members}};
+            return {
+                ...state,
+                members: {
+                    ...state.members,
+                    [action.payload.id]: action.payload.members
+                }
+            };
         default:
             return state;
     }

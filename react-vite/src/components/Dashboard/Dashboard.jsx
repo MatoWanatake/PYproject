@@ -50,7 +50,7 @@ function Dashboard() {
                                     return (
                                         <div key={group} className="user">
                                             <div className="name">
-                                                Expense from {group !== "-" ? `group ${group}` : "direct friendship"}
+                                                Expense from {group !== "-1" ? `group ${group}` : "direct friendship"}
                                             </div>
                                             <div className="amount">
                                                 You
