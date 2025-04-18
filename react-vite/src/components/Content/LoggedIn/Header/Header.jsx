@@ -1,11 +1,26 @@
 import './Header.css';
 import {useModal} from "../../../../context/Modal.jsx";
-import ExpenseFormModal from "../../../Expense/ExpenseFormModal";
-import PaymentFormModal from "../../../Expense/PaymentFormModal";
+import ExpenseFormModal from "../../../ExpenseFormModal";
+import PaymentFormModal from "../../../PaymentFormModal";
+import {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {getBalance} from "../../../../redux/user.js";
+import {useNavigate} from "react-router-dom";
+import {CURRENCY_FORMATER} from "../../../../utils.js";
 
 function Header() {
+    //Access redux
+    const dispatch = useDispatch();
+
+    //Get navigation hook
+    const navigate = useNavigate();
+
     //Access modal handlers
     const {setModalContent} = useModal();
+
+    //Get user from store
+    const user = useSelector((store) => store.session.user);
+    const balance = useSelector((store) => store.user.balance);
 
     //Add expense
     const add = event => {
@@ -25,6 +40,17 @@ function Header() {
         setModalContent(<PaymentFormModal/>);
     }
 
+    //Abort if not signed in otherwise load data
+    useEffect(() => {
+        //Abort if not signed in
+        if (!user) {
+            navigate('/');
+        }
+
+        //Load data
+        dispatch(getBalance())
+    }, [navigate, dispatch, user])
+
     //The HTML that makes up the component
     return (
         <div className="header">
@@ -38,15 +64,15 @@ function Header() {
             <div className="details">
                 <div className="detail">
                     <div className="title">Total Balance</div>
-                    <div className="value">$0.00</div>
+                    <div className="value">{CURRENCY_FORMATER.format(-balance.owe + balance.owed)}</div>
                 </div>
                 <div className="detail">
                     <div className="title">You Owe</div>
-                    <div className="value">$0.00</div>
+                    <div className="value">{CURRENCY_FORMATER.format(balance.owe)}</div>
                 </div>
                 <div className="detail">
-                    <div className="title">You Are Owned</div>
-                    <div className="value">$0.00</div>
+                    <div className="title">You Are Owed</div>
+                    <div className="value">{CURRENCY_FORMATER.format(balance.owed)}</div>
                 </div>
             </div>
         </div>

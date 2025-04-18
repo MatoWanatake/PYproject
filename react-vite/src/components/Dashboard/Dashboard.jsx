@@ -1,105 +1,70 @@
 import './Dashboard.css';
-import {Suspense, useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {Await, useLoaderData, useNavigate} from "react-router-dom";
-import {FaCat} from "react-icons/fa6";
+import {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import {CURRENCY_FORMATER} from "../../utils.js";
 
 function Dashboard() {
+    //Access redux
+    const dispatch = useDispatch();
+
     //Get navigation hook
     const navigate = useNavigate();
 
-    //Get data from the loader
-    const data = useLoaderData();
-
-    //Get user from store
+    //Get data from store
     const user = useSelector((store) => store.session.user);
+    const balance = useSelector((store) => store.user.balance);
 
-    //State
-    const [active, setActive] = useState("owe");
-
-    //data.balances.then(data => console.log(data))
-    //data.debits.then(data => console.log(data))
-    //data.credits.then(data => console.log(data))
-
-    //Abort if not signed in
+    //Abort if not signed in otherwise load data
     useEffect(() => {
+        //Abort if not signed in
         if (!user) {
             navigate('/');
         }
-    }, [navigate, user])
+
+        //Load data
+        //Should already be loaded by header
+        //dispatch(getBalance())
+    }, [navigate, dispatch, user])
 
     //The HTML that makes up the component
     return (
         <div className="dashboard">
-            <header>
-                <button
-                    className={`text ${active === "owe" ? "active" : ""}`}
-                    onClick={() => setActive("owe")}
-                >
-                    You Owe
-                </button>
-                <button
-                    className={`text ${active === "owed" ? "active" : ""}`}
-                    onClick={() => setActive("owed")}
-                >
-                    You Are Owed
-                </button>
-            </header>
-            <hr />
-            <div className="container">
-                {active === "owe" && (
-                    <div className="owe">
-                        <Suspense fallback={<h1>Loading...</h1>}>
-                            <Await resolve={data.debits}>
-                                {debits => debits.map(debit => (
-                                    <div key={debit.expense.id + "-" + debit.expense.user_id} className="item">
-                                        <header>
-                                            <FaCat className="icon" size="48"/>
-                                            <div className="who">
-                                                <div className="name">{debit.user.username}</div>
-                                                <div className="amount">is owed {CURRENCY_FORMATER.format(debit.debit.amount)}</div>
+            <header>Balances</header>
+            <hr/>
+            <div className="balances">
+                {Object.entries(balance.users).map(([username, balances]) => (
+                    <div key={username} className="balance">
+                        <header>{username}</header>
+                        <div className="users">
+                            {balances
+                                .filter(balance => balance.total_debit - balance.total_credit !== 0)
+                                .map(balance => {
+                                    //Get group
+                                    const group = balance.group_name
+
+                                    //Get outstanding amount
+                                    const outstanding = balance.total_debit - balance.total_credit
+
+                                    //The HTML that makes up the component
+                                    return (
+                                        <div key={group} className="user">
+                                            <div className="name">
+                                                Expense from {group !== "-" ? `group ${group}` : "direct friendship"}
                                             </div>
-                                        </header>
-                                        <div className="description">
-                                            <div className="title">{debit.expense.title}</div>
-                                            <div className="group" hidden={!debit.group}>
-                                                <div className="name">{debit.group?.name}</div>
-                                                <div className="description">{debit.group?.description}</div>
+                                            <div className="amount">
+                                                You
+                                                are {outstanding > 0 ? "owed" : "owe"} {CURRENCY_FORMATER.format(outstanding)}
+                                            </div>
+                                            <div className="warning" hidden={outstanding > 0}>
+                                                You have been overpaid!
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </Await>
-                        </Suspense>
+                                    )
+                                })}
+                        </div>
                     </div>
-                )}
-                {active === "owed" && (
-                    <div className="owed">
-                        <Suspense fallback={<h1>Loading...</h1>}>
-                            <Await resolve={data.credits}>
-                                {debits => debits.map(debit => (
-                                    <div key={debit.expense.id + "-" + debit.expense.user_id} className="item">
-                                        <header>
-                                            <FaCat className="icon" size="48"/>
-                                            <div className="who">
-                                                <div className="name">{debit.user.username}</div>
-                                                <div className="amount">owes you {CURRENCY_FORMATER.format(debit.debit.amount)}</div>
-                                            </div>
-                                        </header>
-                                        <div className="description">
-                                            <div className="title">{debit.expense.title}</div>
-                                            <div className="group" hidden={!debit.group}>
-                                                <div className="name">{debit.group?.name}</div>
-                                                <div className="description">{debit.group?.description}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </Await>
-                        </Suspense>
-                    </div>
-                )}
+                ))}
             </div>
         </div>
     );

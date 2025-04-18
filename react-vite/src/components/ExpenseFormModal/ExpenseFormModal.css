@@ -1,0 +1,16 @@
+.expense-form-modal {
+    display: flex;
+
+    .debits {
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: center;
+        justify-items: center;
+
+        .debit {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            gap: 10px;
+        }
+    }
+}

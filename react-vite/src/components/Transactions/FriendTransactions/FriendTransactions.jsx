@@ -2,7 +2,7 @@ import {Await, useLoaderData} from 'react-router-dom';
 
 import './FriendTransactions.css';
 import {Suspense} from "react";
-import Transactions from "../Transactions";
+import Transactions from "../index.js";
 
 function FriendTransactions() {
     //Get data from the loader

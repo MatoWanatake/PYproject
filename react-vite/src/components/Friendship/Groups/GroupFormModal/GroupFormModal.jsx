@@ -1,8 +1,8 @@
 import './GroupFormModal.css';
 import {useDispatch, useSelector} from "react-redux";
-import {useModal} from "../../../context/Modal.jsx";
+import {useModal} from "../../../../context/Modal.jsx";
 import {useEffect, useState} from "react";
-import {createGroup, getFriends} from "../../../redux/user.js";
+import {createGroup, getFriends} from "../../../../redux/user.js";
 import {useNavigate} from "react-router-dom";
 
 function GroupFormModal() {

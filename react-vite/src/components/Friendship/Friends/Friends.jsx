@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchFriends } from '../../redux/friends';
 import './Friends.css';
 import PropTypes from "prop-types";
-import {useModal} from "../../context/Modal.jsx";
-import FriendFormModal from "./FriendFormModal";
-import Friend from "./Friend";
+import {useModal} from "../../../context/Modal.jsx";
+import FriendFormModal from "./FriendFormModal/index.js";
+import Friend from "./Friend/index.js";
 import {Link} from "react-router-dom";
 import PropTypes from 'prop-types';
 
