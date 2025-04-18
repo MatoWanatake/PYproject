@@ -1,29 +1,45 @@
-import { SET_FRIENDS } from '../components/Friends/Friends'
+import {fetch} from "./store.js";
 
-export const setFriends = (friends) => ({
-    type: SET_FRIENDS,
-    friends
-})
+//! Action Types:
+const SET_FRIENDS = 'friends/SET_ALL';
+const ADD_FRIEND = 'friends/ADD';
+const UPDATE_FRIEND = 'friends/UPDATE';
+const DELETE_FRIEND = 'friends/DELETE';
 
-// Thunk to fetch friends from backend
+//  ! Action Creators
+const setFriends = (friends) => (
+    { 
+        type: SET_FRIENDS, 
+        payload: friends 
+    }
+);
+const addFriend = (friend) => (
+    { 
+        type: ADD_FRIEND, 
+        payload: friend 
+    }
+);
+const updateFriend = (friend) => (
+    { 
+        type: UPDATE_FRIEND, 
+        payload: friend 
+    }
+);
+const deleteFriend = (id) => (
+    { 
+        type: DELETE_FRIEND, 
+        payload: id 
+    }
+);
+
+// ! THUNKS
+//  Get all thunks
 export const fetchFriends = () => async (dispatch) => {
-  const res = await fetch('/api/friends')
-  if (res.ok) {
-    const data = await res.json();
-    dispatch(setFriends(data.friends))
-  } else {
-    console.error('Failed to fetch friends')
-  }
+    try {
+        const res = await fetch('/api/friends');
+        const data = await res.json();
+        dispatch(setFriends(data));
+    } catch (err) {
+        console.error("Fetch Friends Error:", err);
+    }
 };
-
-// Initial state and reducer
-const initialState = [];
-
-export default function friendsReducer(state = initialState, action) {
-  switch (action.type) {
-    case SET_FRIENDS:
-      return action.friends;
-    default:
-      return state;
-  }
-}
