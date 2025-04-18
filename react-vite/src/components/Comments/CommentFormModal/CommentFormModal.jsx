@@ -31,7 +31,7 @@ function CommentFormModal({expense_id, comment}) {
 
         //Persist
         const promise =
-            comment.id ?
+            comment?.id ?
                 //Update
                 dispatch(editExpenseComment({
                     expense_id,
