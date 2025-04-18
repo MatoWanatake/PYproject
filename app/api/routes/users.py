@@ -1,4 +1,4 @@
-from flask import Blueprint. jsponify
+from flask import Blueprint, jsponify
 import sqlite3
 
 def get_db_connection():
