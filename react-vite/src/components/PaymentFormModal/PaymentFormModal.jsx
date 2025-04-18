@@ -1,6 +1,6 @@
 import './PaymentFormModal.css';
-import {useModal} from "../../../context/Modal.jsx";
-import CashPaymentFormModal from "../CashPaymentFormModal";
+import {useModal} from "../../context/Modal.jsx";
+import CashPaymentFormModal from "./CashPaymentFormModal/index.js";
 import venmoImage from "./venmo_logo.png";
 import paypalImage from "./paypal_logo.png";
 

@@ -3,25 +3,25 @@ import {isNotNullOrEmpty} from "../utils.js";
 import {getBalance} from "./user.js";
 
 //Action Types
-const CREDIT_CLEAR = 'credit/clear';
+const EXPENSE_CLEAR = 'expense/clear';
 
 //Actions
-const creditClearAction = () => {
+const creditExpenseAction = () => {
     return {
-        type: CREDIT_CLEAR
+        type: EXPENSE_CLEAR
     }
 }
 
 //Thunks
 export const clear = () => {
     return async (dispatch) => {
-        return dispatch(creditClearAction());
+        return dispatch(creditExpenseAction());
     }
 }
 
-export const addCredit = ({paid_to, amount, group_id = ""}) => {
+export const addExpense = ({title, amount, debits, group_id = ""}) => {
     //Create post body with two required fields
-    const post = {paid_to, amount};
+    const post = {title, amount, debits};
 
     //Add the group when set
     if (isNotNullOrEmpty(group_id)) {
@@ -29,7 +29,7 @@ export const addCredit = ({paid_to, amount, group_id = ""}) => {
     }
 
     return async (dispatch) => {
-        return fetch("/api/expenses/credits", {
+        return fetch("/api/expenses", {
             method: "POST",
             body: JSON.stringify(post)
         })
@@ -45,7 +45,7 @@ const initialState = {
 //Reducer
 function creditReducer(state = initialState, action) {
     switch (action.type) {
-        case CREDIT_CLEAR:
+        case EXPENSE_CLEAR:
             return {...initialState};
         default:
             return state;

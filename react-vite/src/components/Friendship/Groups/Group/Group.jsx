@@ -1,7 +1,7 @@
 import './Group.css';
 import {GiCat} from "react-icons/gi";
 import PropTypes from "prop-types";
-import {NO_OP_FUNCTION} from "../../../utils.js";
+import {NO_OP_FUNCTION} from "../../../../utils.js";
 
 function Group({name, click = NO_OP_FUNCTION}) {
     //The HTML that makes up the component

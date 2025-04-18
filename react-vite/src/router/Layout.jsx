@@ -10,6 +10,7 @@ import './Layout.css';
 export default function Layout() {
     const dispatch = useDispatch();
 
+    //Get data from store
     const user = useSelector((store) => store.session.user);
 
     useEffect(() => {

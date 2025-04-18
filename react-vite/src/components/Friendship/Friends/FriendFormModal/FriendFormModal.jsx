@@ -1,9 +1,9 @@
 import './FriendFormModal.css';
 import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {useModal} from "../../../context/Modal.jsx";
-import {isNotNullOrEmpty} from "../../../utils.js";
-import {addFriends} from "../../../redux/user.js";
+import {useModal} from "../../../../context/Modal.jsx";
+import {isNotNullOrEmpty} from "../../../../utils.js";
+import {addFriends} from "../../../../redux/user.js";
 
 function FriendFormModal() {
     //Access redux

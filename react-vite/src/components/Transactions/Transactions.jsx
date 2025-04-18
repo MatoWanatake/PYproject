@@ -1,7 +1,7 @@
 import './Transactions.css';
 import {nanoid} from "nanoid";
 
-function Transactions({data}) {
+function Transactions({data = { expenses: [], debits: [], credits: []}}) {
     //The HTML that makes up the component
     return (
         <div className="transactions">

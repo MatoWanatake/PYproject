@@ -2,6 +2,7 @@ import {applyMiddleware, combineReducers, compose, legacy_createStore as createS
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import userReducer from "./user.js";
+import groupReducer from "./group.js";
 
 export const fetch = async (url, options = {}) => {
     //Default to GET if no method provided
@@ -27,7 +28,8 @@ export const fetch = async (url, options = {}) => {
 
 const rootReducer = combineReducers({
     session: sessionReducer,
-    user: userReducer
+    user: userReducer,
+    group: groupReducer
 });
 
 let enhancer;

@@ -49,7 +49,7 @@ function LoginFormModal() {
                 setErrors(response);
             } else {
                 closeModal();
-                navigate("/dashboard");
+                navigate("/");
             }
         });
     }

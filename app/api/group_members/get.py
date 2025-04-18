@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask_login import login_required
+from flask_login import login_required, current_user
 from sqlalchemy.orm import joinedload
 
 from app.api.groups.get import valid_group
@@ -21,7 +21,8 @@ def group_members_get(group_id: int):
     return [
         friend.user.to_dict(True) for friend in GroupMember.query.options(
             joinedload(GroupMember.user),
-        ).filter_by(
-            group_id=group_id
+        ).filter(
+            GroupMember.group_id == group_id,
+            GroupMember.user_id != current_user.id
         ).all()
     ]

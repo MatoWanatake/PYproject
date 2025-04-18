@@ -3,16 +3,6 @@
     flex-direction: column;
     width: 100%;
 
-    header {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        margin-bottom: 20px;
-
-        .active {
-            text-decoration: underline;
-        }
-    }
-
     hr {
         border: none;
         height: 2px;
@@ -21,37 +11,49 @@
         margin-bottom: 20px;
     }
 
-    .container {
-        .owe {
-            .item {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                margin-bottom: 40px;
+    .balances {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
 
-                header {
-                    display: flex;
-                    flex-direction: row;
-                    margin-bottom: 20px;
+        .balance {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            margin-bottom: 25px;
 
-                    .icon {
-                        margin-right: 10px;
-                    }
+            header {
+                width: 100%;
+                margin-bottom: 10px;
+            }
 
-                    .who {
-                        display: flex;
-                        flex-direction: column;
-                        align-items: flex-start;
-                    }
-                }
+            .users {
+                margin-bottom: 25px;
 
-                .description {
+                .user {
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
-                    margin-left: 58px;
+                    margin-bottom: 25px;
+
+                    .warning {
+                        color: red;
+                    }
+                }
+
+                .user:last-child {
+                    margin-bottom: 0;
                 }
             }
+
+            .users:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .balance:last-child {
+            margin-bottom: 0;
         }
     }
 }

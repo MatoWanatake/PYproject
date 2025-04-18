@@ -4,8 +4,8 @@ import {useNavigate} from 'react-router-dom';
 import './Friendship.css';
 import {useDispatch, useSelector} from "react-redux";
 import {getFriends, getGroups} from "../../redux/user.js";
-import Friends from "../Friends";
-import Groups from "../Groups";
+import Friends from "./Friends";
+import Groups from "./Groups";
 
 function Friendship() {
     //Access redux
@@ -30,8 +30,8 @@ function Friendship() {
         }
 
         //Load data
-        dispatch(getFriends())
         dispatch(getGroups())
+        dispatch(getFriends())
     }, [navigate, dispatch, user])
 
     //The HTML that makes up the component

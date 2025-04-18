@@ -1,5 +1,5 @@
 import './Friend.css';
-import {NO_OP_FUNCTION} from "../../../utils.js";
+import {NO_OP_FUNCTION} from "../../../../utils.js";
 import PropTypes from "prop-types";
 import {FaCat} from "react-icons/fa6";
 

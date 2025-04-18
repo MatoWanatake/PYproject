@@ -2,7 +2,7 @@ import {Await, useLoaderData} from 'react-router-dom';
 
 import './GroupTransactions.css';
 import {Suspense} from "react";
-import Transactions from "../Transactions";
+import Transactions from "../index.js";
 
 function GroupTransactions() {
     //Get data from the loader

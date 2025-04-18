@@ -1,7 +1,7 @@
 import './Groups.css';
 import PropTypes from "prop-types";
-import {useModal} from "../../context/Modal.jsx";
-import GroupFormModal from "./GroupFormModal";
+import {useModal} from "../../../context/Modal.jsx";
+import GroupFormModal from "./GroupFormModal/index.js";
 import Group from "./Group/index.js";
 import {Link} from "react-router-dom";
 
