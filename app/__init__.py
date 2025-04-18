@@ -1,5 +1,7 @@
 import os
 from sqlite3 import Connection as SQLite3Connection
+from .models import User, Friend, Group, GroupMember, Expense, Comment, ExpenseDebit, ExpenseCredit
+
 
 from flask import Flask, request, redirect
 from flask_cors import CORS
