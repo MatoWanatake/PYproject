@@ -3,10 +3,15 @@ import PropTypes from "prop-types";
 import {toLocalDate} from "../../../utils.js";
 import {useDispatch} from "react-redux";
 import {deleteExpenseComment} from "../../../redux/expense.js";
+import {useModal} from "../../../context/Modal.jsx";
+import CommentFormModal from "../CommentFormModal/index.js";
 
 function Comment({user, comment}) {
     //Access redux
     const dispatch = useDispatch();
+
+    //Access modal handlers
+    const {setModalContent} = useModal();
 
     //Remove
     const remove = (event) => {
@@ -25,17 +30,16 @@ function Comment({user, comment}) {
         //Prevent default actions
         event.preventDefault();
 
-        alert("Edit");
+        //Show modal
+        setModalContent(<CommentFormModal expense_id={comment.expense_id} comment={comment}/>)
     }
-
-    console.log(user, comment);
 
     //The HTML that makes up the component
     return (
         <div className="comment">
             <div className="body">{comment.body}</div>
             <div className="details">posted by {comment.user.email} @ {toLocalDate(comment.created_at)}</div>
-            <div className={user.id !== comment.user_id ? "actions" : "actions hidden"}>
+            <div className={user.id === comment.user_id ? "actions" : "actions hidden"}>
                 <button className="important" onClick={remove}>Delete</button>
                 <button className="tertiary" onClick={edit}>Edit</button>
             </div>

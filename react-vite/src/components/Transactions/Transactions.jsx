@@ -1,5 +1,6 @@
 import './Transactions.css';
 import {nanoid} from "nanoid";
+import PropTypes from "prop-types";
 
 function Transactions({data = { expenses: [], debits: [], credits: []}}) {
     //The HTML that makes up the component
@@ -8,7 +9,7 @@ function Transactions({data = { expenses: [], debits: [], credits: []}}) {
             <h2>Expenses</h2>
             <ul>
                 {
-                    data.expenses.map(expense => (
+                    (data.expenses || []).map(expense => (
                         <li key={nanoid()}>{JSON.stringify(expense)}</li>
                     ))
                 }
@@ -16,7 +17,7 @@ function Transactions({data = { expenses: [], debits: [], credits: []}}) {
             <h2>Debits</h2>
             <ul>
                 {
-                    data.debits.map(debit => (
+                    (data.debits || []).map(debit => (
                         <li key={nanoid()}>{JSON.stringify(debit)}</li>
                     ))
                 }
@@ -24,7 +25,7 @@ function Transactions({data = { expenses: [], debits: [], credits: []}}) {
             <h2>Credits</h2>
             <ul>
                 {
-                    data.credits.map(credit => (
+                    (data.credits || []).map(credit => (
                         <li key={nanoid()}>{JSON.stringify(credit)}</li>
                     ))
                 }
@@ -35,11 +36,11 @@ function Transactions({data = { expenses: [], debits: [], credits: []}}) {
 
 // https://www.npmjs.com/package/prop-types
 Transactions.propTypes = {
-    data: {
+    data: PropTypes.shape({
         expenses: Array.isRequired,
         debits: Array.isRequired,
         credits: Array.isRequired,
-    }
+    })
 };
 
 export default Transactions;

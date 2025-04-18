@@ -1,28 +1,44 @@
-import {Await, useLoaderData} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 
 import './GroupTransactions.css';
-import {Suspense} from "react";
+import {useEffect} from "react";
 import Transactions from "../index.js";
+import {useDispatch, useSelector} from "react-redux";
+import {getGroupTransactions} from "../../../redux/user.js";
 
 function GroupTransactions() {
-    //Get data from the loader
-    const data = useLoaderData();
+    //Access redux
+    const dispatch = useDispatch();
+
+    //Get navigation hook
+    const navigate = useNavigate();
+
+    //Get path parameter
+    const { id } = useParams();
+
+    //Get data from store
+    const user = useSelector((store) => store.session.user);
+    const transactions = useSelector((store) => store.user.transactions);
+
+    //Set transactions
+    const group = transactions.groups[id] || {};
+
+    //Abort if not signed in otherwise load data
+    useEffect(() => {
+        //Abort if not signed in
+        if (!user) {
+            navigate('/');
+        }
+
+        //Load data
+        dispatch(getGroupTransactions(id))
+    }, [navigate, dispatch, user, id])
 
     //The HTML that makes up the component
     return (
         <div className="group-transactions">
-            <div>
-                <h1>Transactions</h1>
-                <Suspense fallback={<h1>Loading...</h1>}>
-                    <Await
-                        resolve={data.data}
-                    >
-                        {
-                            data => <Transactions data={data} />
-                        }
-                    </Await>
-                </Suspense>
-            </div>
+            <header>Transactions</header>
+            {group && <Transactions data={group}/>}
         </div>
     );
 }

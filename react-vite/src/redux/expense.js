@@ -99,11 +99,15 @@ export const addExpenseComment = ({expense_id, title, body}) => {
     }
 }
 
-export const editExpenseComment = ({expense_id, comment_id, comment}) => {
+export const editExpenseComment = ({expense_id, comment_id, title, body}) => {
     return async (dispatch) => {
         return fetch(`/api/comments/${comment_id}`, {
             method: "PUT",
-            body: JSON.stringify({comment})
+            body: JSON.stringify({
+                expense_id,
+                title,
+                body
+            })
         })
             .then(() => dispatch(getExpenseComments(expense_id)))
     }

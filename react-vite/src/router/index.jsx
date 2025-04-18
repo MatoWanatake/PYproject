@@ -4,6 +4,8 @@ import Dashboard from "../components/Dashboard";
 import Friendship from "../components/Friendship";
 import Transactions from "../components/Transactions";
 import Test from "../components/Test.jsx";
+import FriendTransactions from "../components/Transactions/FriendTransactions/index.js";
+import GroupTransactions from "../components/Transactions/GroupTransactions/index.js";
 
 export const router = createBrowserRouter([
     {
@@ -20,6 +22,14 @@ export const router = createBrowserRouter([
             {
                 path: "/transactions",
                 element: <Transactions/>,
+            },
+            {
+                path: "/details/friend/:id",
+                element: <FriendTransactions/>,
+            },
+            {
+                path: "/details/group/:id",
+                element: <GroupTransactions/>,
             },
             {
                 path: "/test",

@@ -4,11 +4,15 @@
     align-items: flex-start;
     width: 100%;
 
-    .form {
+    .action {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
         width: 100%;
 
-        textarea {
-            height: 150px;
+        button {
+            width: auto;
         }
     }
 }

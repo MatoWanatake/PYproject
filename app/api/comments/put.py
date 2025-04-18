@@ -8,7 +8,7 @@ from app.models import db
 comments_put_blueprint = Blueprint('comments_put_blueprint', __name__)
 
 
-@comments_put_blueprint.route("/<int:comment_id>", methods=['POST'])
+@comments_put_blueprint.route("/<int:comment_id>", methods=['PUT'])
 @login_required
 def expense_comment_put(comment_id: int):
     # Make sure current user has access to the expense
@@ -23,7 +23,6 @@ def expense_comment_put(comment_id: int):
     # Validate input
     if form.validate_on_submit():
         # Update
-        comment.title = form.data.get("title")
         comment.body = form.data.get("body")
 
         # Commit remaining changes
