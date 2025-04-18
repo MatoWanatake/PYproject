@@ -1,9 +1,16 @@
 import './Groups.css';
 import PropTypes from "prop-types";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { deleteGroup } from "../../redux/groups";
 
-function Groups({groups}) {
-    //The HTML that makes up the component
+function Groups({ groups }) {
+    const dispatch = useDispatch();
+
+    const handleDelete = async (groupId) => {
+        await dispatch(deleteGroup(groupId));
+    };
+
     return (
         <div className={'groups'}>
             <ul>
@@ -12,6 +19,7 @@ function Groups({groups}) {
                         <Link to={`/example/group/${group.id}`}>
                             {group.name}
                         </Link>
+                        <button onClick={() => handleDelete(group.id)}>Delete</button>
                     </li>
                 ))}
             </ul>
@@ -19,9 +27,8 @@ function Groups({groups}) {
     );
 }
 
-// https://www.npmjs.com/package/prop-types
 Groups.propTypes = {
     groups: PropTypes.array.isRequired,
-}
+};
 
 export default Groups;
