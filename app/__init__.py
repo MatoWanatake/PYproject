@@ -10,6 +10,7 @@ from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
 from .api.auth_routes import auth_routes
+from .api.comments import comments_put_blueprint, comments_delete_blueprint
 from .api.expense_credits import expense_credits_get_blueprint, expense_credits_post_blueprint, \
     expense_credits_put_blueprint, expense_credits_delete_blueprint
 from .api.expense_debits import expense_debits_get_blueprint, expense_debits_post_blueprint, \
@@ -51,8 +52,9 @@ app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(users_get_blueprint, url_prefix='/api/users')
 
 # Friends
-app.register_blueprint(friends_get_blueprint, url_prefix='/api/friends')
-app.register_blueprint(friends_post_blueprint, url_prefix='/api/friends')
+friends_url_prefix = '/api/friends'
+app.register_blueprint(friends_get_blueprint, url_prefix=friends_url_prefix)
+app.register_blueprint(friends_post_blueprint, url_prefix=friends_url_prefix)
 
 # Expenses
 expenses_url_prefix = '/api/expenses'
@@ -87,8 +89,13 @@ app.register_blueprint(groups_put_blueprint, url_prefix=group_url_prefix)
 app.register_blueprint(groups_delete_blueprint, url_prefix=group_url_prefix)
 
 # Group Members
-app.register_blueprint(group_members_get_blueprint, url_prefix='/api/groups')
-app.register_blueprint(group_members_post_blueprint, url_prefix='/api/groups')
+app.register_blueprint(group_members_get_blueprint, url_prefix=group_url_prefix)
+app.register_blueprint(group_members_post_blueprint, url_prefix=group_url_prefix)
+
+# Comments
+comment_url_prefix = '/api/comments'
+app.register_blueprint(comments_put_blueprint, url_prefix=comment_url_prefix)
+app.register_blueprint(comments_delete_blueprint, url_prefix=comment_url_prefix)
 
 db.init_app(app)
 Migrate(app, db)

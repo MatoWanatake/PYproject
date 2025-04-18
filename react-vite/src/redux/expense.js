@@ -85,13 +85,17 @@ export const getExpenseComments = (id) => {
     }
 }
 
-export const addExpenseComment = ({id, comment}) => {
+export const addExpenseComment = ({expense_id, title, body}) => {
     return async (dispatch) => {
-        return fetch(`/api/expenses/${id}/comments`, {
+        return fetch(`/api/expenses/${expense_id}/comments`, {
             method: "POST",
-            body: JSON.stringify({comment})
+            body: JSON.stringify({
+                expense_id,
+                title,
+                body
+            })
         })
-            .then(() => dispatch(getExpenseComments(id)))
+            .then(() => dispatch(getExpenseComments(expense_id)))
     }
 }
 

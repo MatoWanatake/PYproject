@@ -12,3 +12,7 @@ export const isNotNullOrEmpty = (value) => {
 export const hasDuplicates = (array, key) => {
     return new Set(array.map(item => item[key])).size !== array.length;
 }
+
+export const toLocalDate = (date) => {
+    return new Date(date).toLocaleString();
+}
