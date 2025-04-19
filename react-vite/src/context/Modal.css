@@ -39,4 +39,34 @@
             margin-bottom: 10px;
         }
     }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        .row {
+            margin-bottom: 16px;
+        }
+
+        .row.full {
+            width: 100%;
+        }
+
+        .row.buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .row:last-child {
+            margin-bottom: 0;
+        }
+
+        p.error {
+            color: red;
+        }
+    }
 }

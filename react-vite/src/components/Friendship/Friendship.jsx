@@ -14,7 +14,7 @@ function Friendship() {
     //Get navigation hook
     const navigate = useNavigate();
 
-    //Get data from store
+    //Get data from the store
     const user = useSelector((store) => store.session.user);
     const friends = useSelector((store) => store.user.friends);
     const groups = useSelector((store) => store.user.groups);
@@ -22,9 +22,9 @@ function Friendship() {
     //State
     const [active, setActive] = useState("friends");
 
-    //Abort if not signed in otherwise load data
+    //Abort if is not signed in otherwise load data
     useEffect(() => {
-        //Abort if not signed in
+        //Abort if is not signed in
         if (!user) {
             navigate('/');
         }

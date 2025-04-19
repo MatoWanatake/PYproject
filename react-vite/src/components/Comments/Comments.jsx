@@ -19,7 +19,7 @@ function Comments({expense_id}) {
     //Access modal handlers
     const {setModalContent} = useModal();
 
-    //Get data from store
+    //Get data from the store
     const user = useSelector((store) => store.session.user);
     const allComments = useSelector((store) => store.expense.comments);
 
@@ -32,9 +32,9 @@ function Comments({expense_id}) {
         setModalContent(<CommentFormModal expense_id={expense_id}/>)
     }
 
-    //Abort if not signed in otherwise load data
+    //Abort if is not signed in otherwise load data
     useEffect(() => {
-        //Abort if not signed in
+        //Abort if is not signed in
         if (!user) {
             navigate('/');
         }
@@ -43,7 +43,7 @@ function Comments({expense_id}) {
         dispatch(getExpenseComments(expense_id))
     }, [navigate, dispatch, user, expense_id])
 
-    //Access comments for specific expense
+    //Access comments for the specific expense
     const comments = allComments[expense_id] || [];
 
     //The HTML that makes up the component

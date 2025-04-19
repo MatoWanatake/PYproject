@@ -1,8 +1,8 @@
 import './Dashboard.css';
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {CURRENCY_FORMATER} from "../../utils.js";
+import {Link, useNavigate} from "react-router-dom";
+import {toCurrency} from "../../utils.js";
 
 function Dashboard() {
     //Access redux
@@ -11,13 +11,13 @@ function Dashboard() {
     //Get navigation hook
     const navigate = useNavigate();
 
-    //Get data from store
+    //Get data from the store
     const user = useSelector((store) => store.session.user);
     const balance = useSelector((store) => store.user.balance);
 
-    //Abort if not signed in otherwise load data
+    //Abort if is not signed in otherwise load data
     useEffect(() => {
-        //Abort if not signed in
+        //Abort if is not signed in
         if (!user) {
             navigate('/');
         }
@@ -40,7 +40,7 @@ function Dashboard() {
                             {balances
                                 .filter(balance => balance.total_debit - balance.total_credit !== 0)
                                 .map(balance => {
-                                    //Get group
+                                    //Get a group
                                     const group = balance.group_name
 
                                     //Get outstanding amount
@@ -48,13 +48,18 @@ function Dashboard() {
 
                                     //The HTML that makes up the component
                                     return (
-                                        <div key={group} className="user">
+                                        <div key={group} className="balance">
                                             <div className="name">
-                                                Expense from {group !== "-1" ? `group ${group}` : "direct friendship"}
+                                                <span>Expense from </span>
+                                                {
+                                                    group !== "-1" ?
+                                                        <Link to={`/details/group/${balance.group_id}`}>{group}</Link> :
+                                                        <Link to={`/details/friend/${balance.user_id}`}>{username}</Link>
+                                                }
                                             </div>
                                             <div className="amount">
                                                 You
-                                                are {outstanding > 0 ? "owed" : "owe"} {CURRENCY_FORMATER.format(outstanding)}
+                                                are {outstanding > 0 ? "owed" : "owe"} {toCurrency(outstanding)}
                                             </div>
                                             <div className="warning" hidden={outstanding > 0}>
                                                 You have been overpaid!

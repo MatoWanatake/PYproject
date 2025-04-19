@@ -33,7 +33,7 @@ def users_get_balance():
     user_debits = (
         db.session.query(
             ExpenseDebit.user_id.label("user_id"),
-            func.coalesce(Expense.group_id, literal("-1")).label("group_name"),
+            func.coalesce(Expense.group_id, literal("-1")).label("group_id"),
             func.coalesce(func.sum(ExpenseDebit.amount), 0).label("total_debit"),
         )
         .join(Expense, Expense.id == ExpenseDebit.expense_id)
@@ -46,7 +46,7 @@ def users_get_balance():
     user_credits = (
         db.session.query(
             ExpenseCredit.paid_by.label("user_id"),
-            func.coalesce(ExpenseCredit.group_id, literal("-1")).label("group_name"),
+            func.coalesce(ExpenseCredit.group_id, literal("-1")).label("group_id"),
             func.coalesce(func.sum(ExpenseCredit.amount), 0).label("total_credit"),
         )
         .filter(ExpenseCredit.paid_to == current_user.id)
@@ -57,17 +57,19 @@ def users_get_balance():
     # Main Query
     results = (
         db.session.query(
+            User.id.label("user_id"),
             User.username,
+            Group.id.label("group_id"),
             func.coalesce(Group.name, "-1").label("group_name"),
             user_debits.c.total_debit,
             func.coalesce(user_credits.c.total_credit, 0).label("total_credit"),
         )
         .join(User, user_debits.c.user_id == User.id)
-        .outerjoin(Group, user_debits.c.group_name == Group.id)
+        .outerjoin(Group, user_debits.c.group_id == Group.id)
         .outerjoin(
             user_credits,
             (user_debits.c.user_id == user_credits.c.user_id) &
-            (user_debits.c.group_name == user_credits.c.group_name)
+            (user_debits.c.group_id == user_credits.c.group_id)
         )
     ).all()
 

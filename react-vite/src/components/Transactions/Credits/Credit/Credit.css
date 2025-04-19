@@ -1,0 +1,9 @@
+.credit {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+
+    :last-child {
+        margin-bottom: 0;
+    }
+}

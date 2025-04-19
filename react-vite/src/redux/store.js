@@ -13,12 +13,12 @@ export const fetch = async (url, options = {}) => {
     //Use empty headers if not headers are provided
     options.headers = options.headers || {};
 
-    //Set content type if not already set for POST / PUT
+    //Set the content type if not already set for POST / PUT
     if (options.method.toUpperCase() === 'POST' || options.method.toUpperCase() === 'PUT') {
         options.headers['Content-Type'] = options.headers['Content-Type'] || 'application/json';
     }
 
-    //Call native fetch function
+    //Call a native fetch function
     const res = await window.fetch(url, options);
 
     //Check to see if the call resulted in an error

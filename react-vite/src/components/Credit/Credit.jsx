@@ -62,7 +62,7 @@ function Credit() {
             });
             revalidate();
         } catch (error) {
-            setMessage(error.response?.data?.message || "Failed to create credit.");
+            setMessage(error.response?.transactions?.message || "Failed to create credit.");
         } finally {
             setLoading(false);
         }

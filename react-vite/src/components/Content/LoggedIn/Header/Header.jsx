@@ -6,7 +6,7 @@ import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getBalance} from "../../../../redux/user.js";
 import {useNavigate} from "react-router-dom";
-import {CURRENCY_FORMATER} from "../../../../utils.js";
+import {toCurrency} from "../../../../utils.js";
 
 function Header() {
     //Access redux
@@ -40,9 +40,9 @@ function Header() {
         setModalContent(<PaymentFormModal/>);
     }
 
-    //Abort if not signed in otherwise load data
+    //Abort if is not signed in otherwise load data
     useEffect(() => {
-        //Abort if not signed in
+        //Abort if is not signed in
         if (!user) {
             navigate('/');
         }
@@ -64,15 +64,15 @@ function Header() {
             <div className="details">
                 <div className="detail">
                     <div className="title">Total Balance</div>
-                    <div className="value">{CURRENCY_FORMATER.format(-balance.owe + balance.owed)}</div>
+                    <div className="value">{toCurrency(-balance.owe + balance.owed)}</div>
                 </div>
                 <div className="detail">
                     <div className="title">You Owe</div>
-                    <div className="value">{CURRENCY_FORMATER.format(balance.owe)}</div>
+                    <div className="value">{toCurrency(balance.owe)}</div>
                 </div>
                 <div className="detail">
                     <div className="title">You Are Owed</div>
-                    <div className="value">{CURRENCY_FORMATER.format(balance.owed)}</div>
+                    <div className="value">{toCurrency(balance.owed)}</div>
                 </div>
             </div>
         </div>

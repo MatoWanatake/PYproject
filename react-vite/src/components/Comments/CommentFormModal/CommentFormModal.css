@@ -1,21 +1,10 @@
 .comment-form-modal {
-    font-family: Arial, sans-serif;
-}
+    width: 300px;
 
-.comment-form-modal p.error {
-    color: red;
-}
-
-.comment-form-modal h1 {
-    font-weight: bold;
-}
-
-.comment-form-modal button.feisty {
-    font-weight: bold;
-    color: red;
-}
-
-.comment-form-modal button.happy {
-    font-weight: bold;
-    color: purple;
+    textarea {
+        width: 100%;
+        height: 100px;
+        resize: vertical;
+        box-sizing: border-box;
+    }
 }

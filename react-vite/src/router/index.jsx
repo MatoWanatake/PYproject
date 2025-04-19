@@ -3,9 +3,8 @@ import Layout from './Layout';
 import Dashboard from "../components/Dashboard";
 import Friendship from "../components/Friendship";
 import Transactions from "../components/Transactions";
-import Test from "../components/Test.jsx";
-import FriendTransactions from "../components/Transactions/FriendTransactions/index.js";
-import GroupTransactions from "../components/Transactions/GroupTransactions/index.js";
+import FriendTransactions from "../components/FriendTransactions/index.js";
+import GroupTransactions from "../components/GroupTransactions/index.js";
 
 export const router = createBrowserRouter([
     {
@@ -30,10 +29,6 @@ export const router = createBrowserRouter([
             {
                 path: "/details/group/:id",
                 element: <GroupTransactions/>,
-            },
-            {
-                path: "/test",
-                element: <Test/>
             }
         ],
     },

@@ -31,7 +31,7 @@
             .users {
                 margin-bottom: 25px;
 
-                .user {
+                .balance {
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
@@ -40,9 +40,13 @@
                     .warning {
                         color: red;
                     }
+
+                    a {
+                        text-decoration: underline;
+                    }
                 }
 
-                .user:last-child {
+                .balance:last-child {
                     margin-bottom: 0;
                 }
             }

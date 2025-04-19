@@ -6,15 +6,21 @@ import {useModal} from "../../../context/Modal.jsx";
 import {getFriends, getGroups} from "../../../redux/user.js";
 import {addCredit} from "../../../redux/credit.js";
 import {getGroupMembers} from "../../../redux/group.js";
+import {useSendEvent} from "../../../hooks/useSendEvent.js";
+
+export const EVENT_PAYMENT_ADDED = "payment-added";
 
 function CashPaymentFormModal() {
+    //Get event bus
+    const emitter = useSendEvent();
+
     //Access redux
     const dispatch = useDispatch();
 
     //Get navigation hook
     const navigate = useNavigate();
 
-    //Get data from store
+    //Get data from the store
     const user = useSelector((store) => store.session.user);
     const userFriends = useSelector((store) => store.user.friends);
     const groups = useSelector((store) => store.user.groups);
@@ -60,6 +66,7 @@ function CashPaymentFormModal() {
             amount: amount,
             group_id: group,
         }))
+            .then(() => emitter.emit(EVENT_PAYMENT_ADDED))
             .then(() => closeModal())
             .catch(response => {
                 response.json()
@@ -76,9 +83,9 @@ function CashPaymentFormModal() {
         closeModal();
     }
 
-    //Abort if not signed in otherwise load data
+    //Abort if is not signed in otherwise load data
     useEffect(() => {
-        //Abort if not signed in
+        //Abort if is not signed in
         if (!user) {
             navigate('/');
         }

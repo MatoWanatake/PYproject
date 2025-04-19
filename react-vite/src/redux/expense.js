@@ -31,7 +31,7 @@ export const clear = () => {
 }
 
 export const addExpense = ({title, amount, debits, group_id = ""}) => {
-    //Create post body with two required fields
+    //Create the post body with two required fields
     const post = {title, amount, debits};
 
     //Add the group when set
@@ -49,7 +49,7 @@ export const addExpense = ({title, amount, debits, group_id = ""}) => {
 }
 
 export const editExpense = ({id, title, amount, debits, group_id = ""}) => {
-    //Create post body with two required fields
+    //Create the post body with two required fields
     const put = {title, amount, debits};
 
     //Add the group when set

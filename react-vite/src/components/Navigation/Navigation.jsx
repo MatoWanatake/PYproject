@@ -15,7 +15,7 @@ function Navigation() {
     //Get navigation hook
     const navigate = useNavigate();
 
-    //Get data from store
+    //Get data from the store
     const user = useSelector((store) => store.session.user);
 
     //Access modal handlers
@@ -65,7 +65,6 @@ function Navigation() {
                         <p className="username">{user.username}</p>
                         <NavLink to="/">Dashboard</NavLink>
                         <NavLink to="/friendship">Friendship</NavLink>
-                        <NavLink to="/transactions">Transaction</NavLink>
                         <button className="text non-bold" onClick={event => logout(event)}>
                             Log Out
                         </button>

@@ -2,12 +2,4 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-
-    ul {
-        margin-bottom: 20px;
-
-        li {
-            margin-bottom: 10px;
-        }
-    }
 }

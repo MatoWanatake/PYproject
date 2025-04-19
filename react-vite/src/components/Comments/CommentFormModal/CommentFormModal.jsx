@@ -14,7 +14,7 @@ function CommentFormModal({expense_id, comment}) {
     //Get navigation hook
     const navigate = useNavigate();
 
-    //Get data from store
+    //Get data from the store
     const user = useSelector((store) => store.session.user);
 
     //Access modal handlers
@@ -65,9 +65,9 @@ function CommentFormModal({expense_id, comment}) {
         closeModal();
     }
 
-    //Abort if not signed in otherwise load data
+    //Abort if is not signed in otherwise load data
     useEffect(() => {
-        //Abort if not signed in
+        //Abort if is not signed in
         if (!user) {
             navigate('/');
         }
@@ -81,7 +81,6 @@ function CommentFormModal({expense_id, comment}) {
             <header>Create a Comment</header>
             <form className="form" onSubmit={handleSubmit}>
                 <div className="row full">
-                    <label htmlFor="body">&nbsp;</label>
                     <textarea
                         name="body"
                         value={body}
@@ -92,8 +91,8 @@ function CommentFormModal({expense_id, comment}) {
                     {errors.body && <p className="error">{errors.body}</p>}
                 </div>
                 <div className="row full buttons">
-                    <button type="submit">Save</button>
                     <button className="tertiary" onClick={cancel}>Cancel</button>
+                    <button type="submit">Save</button>
                 </div>
             </form>
         </div>

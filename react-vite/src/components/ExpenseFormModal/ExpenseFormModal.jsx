@@ -8,15 +8,21 @@ import {getGroupMembers} from "../../redux/group.js";
 import {nanoid} from "nanoid";
 import {hasDuplicates} from "../../utils.js";
 import {addExpense} from "../../redux/expense.js";
+import {useSendEvent} from "../../hooks/useSendEvent.js";
+
+export const EVENT_ADD_EXPENSE = "add-expense";
 
 function ExpenseFormModal() {
+    //Get event bus
+    const emitter = useSendEvent();
+
     //Access redux
     const dispatch = useDispatch();
 
     //Get navigation hook
     const navigate = useNavigate();
 
-    //Get data from store
+    //Get data from the store
     const user = useSelector((store) => store.session.user);
     const userFriends = useSelector((store) => store.user.friends);
     const groups = useSelector((store) => store.user.groups);
@@ -100,8 +106,8 @@ function ExpenseFormModal() {
         }
 
         const sum = values.reduce((sum, item) => sum + parseFloat(item.amount), 0);
-        if (parseFloat(amount) !== sum) {
-            setErrors({debits: "The sum of all debits must match the expense amount"});
+        if (sum > parseFloat(amount)) {
+            setErrors({debits: "The sum of all debits must be less than or equal to the expense amount"});
             return;
         }
 
@@ -118,8 +124,11 @@ function ExpenseFormModal() {
 
         //Persist
         dispatch(addExpense(post))
+            .then(() => emitter(EVENT_ADD_EXPENSE))
             .then(() => closeModal())
             .catch(response => {
+                console.log(response);
+
                 response.json()
                     .then(json => setErrors(json))
             });
@@ -134,9 +143,9 @@ function ExpenseFormModal() {
         closeModal();
     }
 
-    //Abort if not signed in otherwise load data
+    //Abort if is not signed in otherwise load data
     useEffect(() => {
-        //Abort if not signed in
+        //Abort if is not signed in
         if (!user) {
             navigate('/');
         }

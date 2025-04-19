@@ -14,7 +14,7 @@ def expense_group_get(group_id: int):
     valid_group(group_id)
 
     # Store expenses, debits
-    expenses = []
+    expenses = {}
     debits = []
 
     # Get all associated expense and debits for the friendship
@@ -27,7 +27,7 @@ def expense_group_get(group_id: int):
 
     # Extract expenses and debits
     for expense, debit in expenses_debits:
-        expenses.append(expense)
+        expenses[expense.id] = expense
         debits.append(debit)
 
     # Get all credits for the friendship
@@ -37,7 +37,7 @@ def expense_group_get(group_id: int):
 
     # Return all debits for the current user and the friend
     return jsonify({
-        "expenses": [expense.to_dict() for expense in expenses],
+        "expenses": [expense.to_dict() for expense in expenses.values()],
         "debits": [debit.to_dict() for debit in debits],
         "credits": [credit.to_dict() for credit in expense_credits]
     })

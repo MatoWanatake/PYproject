@@ -1,5 +1,3 @@
-from operator import index
-
 from sqlalchemy import func
 
 from .db import db
