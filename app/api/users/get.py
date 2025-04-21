@@ -76,16 +76,19 @@ def users_get_balance():
                 'transactions': []
             }
 
-        if transaction['type'] == 'user':
-            if transaction['action'] == 'owed':
-                transaction['paid'] = paid_by_me['user'][transaction['user_id']]['total_amount']
+        try:
+            if transaction['type'] == 'user':
+                if transaction['action'] == 'owed':
+                    transaction['paid'] = paid_by_me['user'][transaction['user_id']]['total_amount']
+                else:
+                    transaction['paid'] = paid_to_me['user'][transaction['user_id']]['total_amount']
             else:
-                transaction['paid'] = paid_to_me['user'][transaction['user_id']]['total_amount']
-        else:
-            if transaction['action'] == 'owed':
-                transaction['paid'] = paid_by_me['group'][transaction['group_id']][transaction['user_id']]['total_amount']
-            else:
-                transaction['paid'] = paid_to_me['group'][transaction['group_id']][transaction['user_id']]['total_amount']
+                if transaction['action'] == 'owed':
+                    transaction['paid'] = paid_by_me['group'][transaction['group_id']][transaction['user_id']]['total_amount']
+                else:
+                    transaction['paid'] = paid_to_me['group'][transaction['group_id']][transaction['user_id']]['total_amount']
+        except KeyError:
+            transaction['paid'] = 0
 
         grouped_transactions[transaction['type']][transaction['name']]['transactions'].append(transaction)
 
