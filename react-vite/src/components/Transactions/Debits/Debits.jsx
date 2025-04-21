@@ -8,7 +8,7 @@ function Debits({user, debits, hidden = false}) {
     //The HTML that makes up the component
     return (
         <div className="debits" hidden={hidden}>
-            <header>Debits</header>
+            <header>Who Owes</header>
             {(debits.map(debit => (<Debit key={`${debit.expense_id}-${debit.user_id}`} user={user} debit={debit}/>)))}
         </div>
     );

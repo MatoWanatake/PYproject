@@ -28,7 +28,10 @@ def expense_friend_get(friend_id: int):
         Expense.id == ExpenseDebit.expense_id
     ).filter(
         Expense.group_id.is_(None),
-        ExpenseDebit.user_id.in_([current_user.id, friend_id])
+        or_(
+            and_(Expense.user_id == current_user.id, ExpenseDebit.user_id == friend_id),
+            and_(Expense.user_id == friend_id, ExpenseDebit.user_id == current_user.id)
+        )
     ).all()
 
     # Extract expenses and debits

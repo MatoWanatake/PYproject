@@ -8,7 +8,7 @@ function Credits({user, credits, hidden = false}) {
     //The HTML that makes up the component
     return (
         <div className="credits" hidden={hidden}>
-            <header>Credits</header>
+            <header>Who Paid</header>
             {(credits.map(credit => (<Credit key={credit.id} user={user} credit={credit}/>)))}
         </div>
     );
