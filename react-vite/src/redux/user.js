@@ -150,6 +150,7 @@ const initialState = {
             net: 0,
             owes: 0,
             owed: 0,
+            been_paid: 0,
             paid: 0
         },
         transactions: {

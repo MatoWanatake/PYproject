@@ -14,10 +14,17 @@ def users_get_balance():
     user_id = current_user.id
 
     # How much the current user has been paid
-    paid = db.session.query(
+    been_paid = db.session.query(
         func.sum(ExpenseCredit.amount)
     ).filter(
         ExpenseCredit.paid_to == user_id
+    ).scalar() or 0
+
+    # How much the current user has paid
+    paid = db.session.query(
+        func.sum(ExpenseCredit.amount)
+    ).filter(
+        ExpenseCredit.paid_by == user_id
     ).scalar() or 0
 
     # How much the current user is owed
@@ -95,10 +102,11 @@ def users_get_balance():
     # Return balance summary
     return jsonify({
         'summary': {
+            'been_paid': been_paid,
             'paid': paid,
             'owed': owed,
             'owes': owes,
-            'net': owed - paid - owes,
+            'net': (owes - paid) - (owed - been_paid),
         },
         'transactions': grouped_transactions,
         'paid_to_me': paid_to_me,

@@ -32,7 +32,7 @@
 
     .details {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
         border: 1px solid #f2e002;
         margin-bottom: 20px;
 

@@ -78,6 +78,10 @@ function Header() {
                 </div>
                 <div className="detail">
                     <div className="title">You Have Been Paid</div>
+                    <div className="value">{toCurrency(balance.summary.been_paid)}</div>
+                </div>
+                <div className="detail">
+                    <div className="title">You Have Paid</div>
                     <div className="value">{toCurrency(balance.summary.paid)}</div>
                 </div>
             </div>
