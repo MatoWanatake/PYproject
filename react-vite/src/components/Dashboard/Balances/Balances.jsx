@@ -8,11 +8,11 @@ function Balances({balances}) {
     return (
         <div className="balances">
             <header>Group Balances</header>
-            {Object.entries(balances.group).map(([name, transactions]) => (
-                <Balance key={name} name={name} transactions={transactions}/>))}
+            {Object.entries(balances.group).map(([name, details]) => (
+                <Balance key={name} name={name} id={details.id} group={true} transactions={details.transactions}/>))}
             <header>User Balances</header>
-            {Object.entries(balances.user).map(([name, transactions]) => (
-                <Balance key={name} name={name} transactions={transactions}/>))}
+            {Object.entries(balances.user).map(([name, details]) => (
+                <Balance key={name} name={name} id={details.id} transactions={details.transactions}/>))}
         </div>
     );
 }

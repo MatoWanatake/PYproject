@@ -207,7 +207,8 @@ export const PROP_TYPE_BALANCE = PropTypes.shape({
     type: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     total_amount: PropTypes.number.isRequired,
-    id: PropTypes.number.isRequired,
+    group_id: PropTypes.number,
+    user_id: PropTypes.number.isRequired,
 })
 
 export default userReducer;
