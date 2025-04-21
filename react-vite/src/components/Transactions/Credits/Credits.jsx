@@ -1,28 +1,23 @@
 import './Credits.css';
 import PropTypes from "prop-types";
 import Credit from "./Credit";
+import {PROP_TYPE_CREDIT} from "../../../redux/credit.js";
+import {PROP_TYPE_USER} from "../../../redux/session.js";
 
-function Credits({credits, hidden = false}) {
+function Credits({user, credits, hidden = false}) {
     //The HTML that makes up the component
     return (
         <div className="credits" hidden={hidden}>
             <header>Credits</header>
-            {(credits.map(credit => (<Credit key={credit.id} credit={credit}/>)))}
+            {(credits.map(credit => (<Credit key={credit.id} user={user} credit={credit}/>)))}
         </div>
     );
 }
 
 // https://www.npmjs.com/package/prop-types
 Credits.propTypes = {
-    credits: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        paid_by: PropTypes.number.isRequired,
-        paid_to: PropTypes.number.isRequired,
-        group_id: PropTypes.number,
-        amount: PropTypes.number.isRequired,
-        created_at: PropTypes.string.isRequired,
-        updated_at: PropTypes.string.isRequired,
-    })),
+    user: PROP_TYPE_USER.isRequired,
+    credits: PropTypes.arrayOf(PROP_TYPE_CREDIT).isRequired,
     hidden: PropTypes.bool
 }
 

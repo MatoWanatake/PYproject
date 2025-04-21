@@ -1,24 +1,26 @@
 import './Debit.css';
 import PropTypes from "prop-types";
+import {PROP_TYPE_USER} from "../../../../redux/session.js";
+import {PROP_TYPE_DEBIT} from "../../../../redux/expense.js";
+import {toCurrency} from "../../../../utils.js";
 
-function Debit({debit, hidden = false}) {
+function Debit({user, debit, hidden = false}) {
     //The HTML that makes up the component
     return (
         <div className="debit" hidden={hidden}>
-            <p>{JSON.stringify(debit)}</p>
+            <p>
+                <span>{debit.user.id === user.id ? "You owe" : `${debit.user.username} owes`} </span>
+                <span>{toCurrency(debit.amount)} for expense {debit.expense.title}</span>
+            </p>
+            <hr/>
         </div>
     );
 }
 
 // https://www.npmjs.com/package/prop-types
 Debit.propTypes = {
-    debit: PropTypes.shape({
-        expense_id: PropTypes.number.isRequired,
-        amount: PropTypes.number.isRequired,
-        user_id: PropTypes.number.isRequired,
-        created_at: PropTypes.string.isRequired,
-        updated_at: PropTypes.string.isRequired,
-    }),
+    user: PROP_TYPE_USER.isRequired,
+    debit: PROP_TYPE_DEBIT.isRequired,
     hidden: PropTypes.bool
 }
 

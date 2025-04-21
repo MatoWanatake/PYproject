@@ -21,7 +21,10 @@ def expense_credits_post():
         paid_to = form.data.get("paid_to")
 
         # Make sure paid to is actually a friend
-        is_friend(paid_to)
+        try:
+            is_friend(paid_to)
+        except ValueError:
+            return {"error": {"message": "Invalid friend"}}, 404
 
         # Get group id
         group_id = form.data.get("group_id")

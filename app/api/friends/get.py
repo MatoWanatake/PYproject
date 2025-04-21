@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy.orm import joinedload
 
@@ -20,3 +20,38 @@ def friends_get():
             user_id=current_user.id
         ).all()
     ]
+
+
+@friends_get_blueprint.route("/<int:friend_id>", methods=['GET'])
+@login_required
+def friend_get(friend_id: int):
+    # Early out if current user is the requested user
+    if friend_id == current_user.id:
+        return jsonify(current_user.to_dict())
+
+    # Make sure current user is friends with the requested user
+    try:
+        friend = is_friend(friend_id)
+    except ValueError:
+        return {"error": {"message": "Invalid friend"}}, 404
+
+    # Return group
+    return jsonify(friend.friend.to_dict())
+
+
+def is_friend(friend_id: int) -> Friend:
+    # Early out if current user is the requested user
+    if friend_id == current_user.id:
+        return current_user
+
+    # Look up friendship
+    friend = Friend.query.options(
+        joinedload(Friend.user)
+    ).get([current_user.id, friend_id])
+
+    # If nothing is return
+    if not friend:
+        raise ValueError
+
+    # Return friendship
+    return friend

@@ -1,7 +1,7 @@
 import './Content.css';
 import LoggedOut from "./LoggedOut";
-import PropTypes from "prop-types";
 import LoggedIn from "./LoggedIn";
+import {PROP_TYPE_USER} from "../../redux/session.js";
 
 function Content({user}) {
     //Show splash image if user is logged out
@@ -15,7 +15,7 @@ function Content({user}) {
 
 // https://www.npmjs.com/package/prop-types
 Content.propTypes = {
-    user: PropTypes.object,
+    user: PROP_TYPE_USER,
 }
 
 export default Content;

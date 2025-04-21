@@ -1,0 +1,21 @@
+.balance {
+    font-family: Arial, sans-serif;
+}
+
+.balance p.error {
+    color: red;
+}
+
+.balance h1 {
+    font-weight: bold;
+}
+
+.balance button.feisty {
+    font-weight: bold;
+    color: red;
+}
+
+.balance button.happy {
+    font-weight: bold;
+    color: purple;
+}

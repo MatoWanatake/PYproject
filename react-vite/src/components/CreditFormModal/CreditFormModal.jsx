@@ -1,10 +1,10 @@
-import './PaymentFormModal.css';
+import './CreditFormModal.css';
 import {useModal} from "../../context/Modal.jsx";
-import CashPaymentFormModal from "./CashPaymentFormModal/index.js";
+import CreditCashFormModal from "./CreditCashFormModal";
 import venmoImage from "./venmo_logo.png";
 import paypalImage from "./paypal_logo.png";
 
-function PaymentFormModal() {
+function CreditFormModal() {
     //Access modal handlers
     const {setModalContent, closeModal} = useModal();
 
@@ -14,7 +14,7 @@ function PaymentFormModal() {
         event.preventDefault();
 
         //Update modal
-        setModalContent(<CashPaymentFormModal/>);
+        setModalContent(<CreditCashFormModal/>);
     }
 
     //Venmo
@@ -46,7 +46,7 @@ function PaymentFormModal() {
 
     //The HTML that makes up the component
     return (
-        <div className="payment-form-modal">
+        <div className="credit-form-modal">
             <header>Pay an Expense</header>
             <p>Choose a payment method</p>
             <div className="form">
@@ -71,4 +71,4 @@ function PaymentFormModal() {
     );
 }
 
-export default PaymentFormModal;
+export default CreditFormModal;

@@ -3,7 +3,8 @@ from operator import or_, and_
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 
-from app.models import ExpenseDebit, Friend, Expense, db, ExpenseCredit
+from app.api.friends.get import is_friend
+from app.models import ExpenseDebit, Expense, db, ExpenseCredit
 
 expenses_friend_get_blueprint = Blueprint('expenses_friend_get_blueprint', __name__)
 
@@ -11,8 +12,11 @@ expenses_friend_get_blueprint = Blueprint('expenses_friend_get_blueprint', __nam
 @expenses_friend_get_blueprint.route("/<int:friend_id>", methods=['GET'])
 @login_required
 def expense_friend_get(friend_id: int):
-    # Make sure the current user and the requested user are actually friends
-    is_friend(friend_id)
+    # Make sure current user is friends with the requested user
+    try:
+        is_friend(friend_id)
+    except ValueError:
+        return {"error": {"message": "Invalid friend"}}, 404
 
     # Store expenses, debits
     expenses = {}
@@ -44,18 +48,9 @@ def expense_friend_get(friend_id: int):
     # Return all debits for the current user and the friend
     return jsonify({
         "expenses": [expense.to_dict() for expense in expenses.values()],
-        "debits": [debit.to_dict() for debit in debits],
-        "credits": [credit.to_dict() for credit in expense_credits]
+        "debits": [debit.to_dict() | {"user": debit.user.to_dict(), "expense": debit.expense.to_dict()} for debit in
+                   debits],
+        "credits": [
+            credit.to_dict() | {"user_paid_to": credit.recipient.to_dict(), "user_paid_by": credit.payer.to_dict()} for
+            credit in expense_credits]
     })
-
-
-def is_friend(friend_id: int) -> Friend:
-    # Look up friendship
-    friend = Friend.query.get([current_user.id, friend_id])
-
-    # If nothing is return
-    if not friend:
-        raise ValueError
-
-    # Return friendship
-    return friend

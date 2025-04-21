@@ -6,13 +6,30 @@ import {useNavigate} from "react-router-dom";
 import {getFriends, getGroups} from "../../redux/user.js";
 import {getGroupMembers} from "../../redux/group.js";
 import {nanoid} from "nanoid";
-import {hasDuplicates} from "../../utils.js";
-import {addExpense} from "../../redux/expense.js";
+import {hasDuplicates, isNotNullOrEmpty} from "../../utils.js";
+import {addExpense, editExpense, PROP_TYPE_EXPENSE} from "../../redux/expense.js";
 import {useSendEvent} from "../../hooks/useSendEvent.js";
 
 export const EVENT_ADD_EXPENSE = "add-expense";
+export const EVENT_EDIT_EXPENSE = "edit-expense";
+export const EVENT_DELETE_EXPENSE = "add-expense";
 
-function ExpenseFormModal() {
+function toDebitState(debits) {
+    if (debits.length === 0) {
+        return {[nanoid()]: {user_id: "", amount: ""}}
+    }
+
+    return debits.reduce((accumulator, debit) => {
+        accumulator[nanoid()] = {
+            user_id: debit.user_id,
+            amount: debit.amount,
+        };
+
+        return accumulator;
+    }, {});
+}
+
+function ExpenseFormModal({expense}) {
     //Get event bus
     const emitter = useSendEvent();
 
@@ -32,10 +49,10 @@ function ExpenseFormModal() {
     const {closeModal} = useModal();
 
     //State
-    const [title, setTitle] = useState("");
-    const [group, setGroup] = useState("");
-    const [amount, setAmount] = useState(0.00);
-    const [debits, setDebits] = useState({[nanoid()]: {user_id: "", amount: ""}});
+    const [title, setTitle] = useState(expense?.title || "");
+    const [group, setGroup] = useState(expense?.group_id || "");
+    const [amount, setAmount] = useState(expense?.amount || 0.00);
+    const [debits, setDebits] = useState(toDebitState(expense?.debits || []));
     const [errors, setErrors] = useState({});
 
     //Set friends
@@ -112,19 +129,26 @@ function ExpenseFormModal() {
         }
 
         //Persist
-        const post = {
+        const data = {
             title,
             amount: parseFloat(amount),
             debits: values.map((debit) => ({
                 user_id: parseInt(debit.user_id),
                 amount: parseFloat(debit.amount)
             })),
-            group_id: group
+            group_id: isNotNullOrEmpty(group) ? parseInt(group) : null,
         }
 
-        //Persist
-        dispatch(addExpense(post))
-            .then(() => emitter(EVENT_ADD_EXPENSE))
+        const promise =
+            expense?.id ?
+                //Update
+                dispatch(editExpense({id: expense.id, ...data})) :
+
+                //New
+                dispatch(addExpense(data));
+
+        promise
+            .then(() => emitter(expense?.id ? EVENT_EDIT_EXPENSE : EVENT_ADD_EXPENSE, data))
             .then(() => closeModal())
             .catch(response => {
                 console.log(response);
@@ -153,7 +177,12 @@ function ExpenseFormModal() {
         //Load data
         dispatch(getGroups())
         dispatch(getFriends())
-    }, [navigate, dispatch, user])
+
+        //If a group is set (edit mode) load group members
+        if (expense?.group_id) {
+            dispatch(getGroupMembers(expense.group_id))
+        }
+    }, [navigate, dispatch, user, expense])
 
     //The HTML that makes up the component
     return (
@@ -226,7 +255,7 @@ function ExpenseFormModal() {
                                     placeholder="Amount"
                                 />
                             </div>
-                            <button type="button" className="text" onClick={() => removeDebit(id)}>
+                            <button type="button" className="important" onClick={() => removeDebit(id)}>
                                 Remove
                             </button>
                         </div>
@@ -237,12 +266,17 @@ function ExpenseFormModal() {
                     {errors.debits && <p className="error">{errors.debits}</p>}
                 </div>
                 <div className="row full buttons">
-                    <button type="submit">Save</button>
                     <button className="tertiary" onClick={cancel}>Cancel</button>
+                    <button type="submit">Save</button>
                 </div>
             </form>
         </div>
     );
+}
+
+// https://www.npmjs.com/package/prop-types
+ExpenseFormModal.propTypes = {
+    expense: PROP_TYPE_EXPENSE
 }
 
 export default ExpenseFormModal;

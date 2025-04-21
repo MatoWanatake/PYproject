@@ -1,13 +1,25 @@
 import {fetch} from "./store.js";
+import PropTypes from "prop-types";
 
 //Action Types
 const GROUP_CLEAR = 'group/clear';
+const GROUP_GET = 'group/get';
 const GROUP_MEMBERS = 'group/members';
 
 //Actions
 const groupClearAction = () => {
     return {
         type: GROUP_CLEAR
+    }
+}
+
+const groupGetAction = (id, group) => {
+    return {
+        type: GROUP_GET,
+        payload: {
+            id,
+            group
+        }
     }
 }
 
@@ -28,6 +40,16 @@ export const clear = () => {
     }
 }
 
+export const getGroup = (id) => {
+    return async (dispatch) => {
+        return fetch(`/api/groups/${id}`)
+            .then(response => response.json())
+            .then(group => {
+                dispatch(groupGetAction(id, group));
+            })
+    }
+}
+
 export const getGroupMembers = (id) => {
     return async (dispatch) => {
         return fetch(`/api/groups/${id}/members`)
@@ -40,7 +62,8 @@ export const getGroupMembers = (id) => {
 
 //Initial State
 const initialState = {
-    members : {}
+    members: {},
+    groups: {}
 };
 
 //Reducer
@@ -48,6 +71,14 @@ function groupReducer(state = initialState, action) {
     switch (action.type) {
         case GROUP_CLEAR:
             return {...initialState};
+        case GROUP_GET:
+            return {
+                ...state,
+                groups: {
+                    ...state.group,
+                    [action.payload.id]: action.payload.group
+                }
+            };
         case GROUP_MEMBERS:
             return {
                 ...state,
@@ -60,5 +91,14 @@ function groupReducer(state = initialState, action) {
             return state;
     }
 }
+
+//PropTypes
+export const PROP_TYPE_GROUP = PropTypes.shape({
+    created_at: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    updated_at: PropTypes.string.isRequired,
+});
 
 export default groupReducer;

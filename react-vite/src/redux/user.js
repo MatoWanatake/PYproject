@@ -1,4 +1,5 @@
 import {fetch} from "./store.js";
+import PropTypes from "prop-types";
 
 //Action Types
 const USER_CLEAR = 'user/clear';
@@ -142,12 +143,19 @@ export const createGroup = ({name, description = "", ids}) => {
 
 //Initial State
 const initialState = {
-    friends : [],
-    groups : [],
+    friends: [],
+    groups: [],
     balance: {
-        owe: 0,
-        owed: 0,
-        users: {}
+        summary: {
+            net: 0,
+            owes: 0,
+            owed: 0,
+            paid: 0
+        },
+        transactions: {
+            group: {},
+            user: {}
+        },
     },
     transactions: {
         friends: {},
@@ -177,20 +185,29 @@ function userReducer(state = initialState, action) {
                     }
                 }
             };
-            case USER_GROUP_TRANSACTIONS:
-                return {
-                    ...state,
-                    transactions: {
-                        ...state.transactions,
-                        groups: {
-                            ...state.transactions.groups,
-                            [action.payload.id]: action.payload.transactions
-                        }
+        case USER_GROUP_TRANSACTIONS:
+            return {
+                ...state,
+                transactions: {
+                    ...state.transactions,
+                    groups: {
+                        ...state.transactions.groups,
+                        [action.payload.id]: action.payload.transactions
                     }
                 }
+            }
         default:
             return state;
     }
 }
+
+//PropTypes
+export const PROP_TYPE_BALANCE = PropTypes.shape({
+    action: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    total_amount: PropTypes.number.isRequired,
+    id: PropTypes.number.isRequired,
+})
 
 export default userReducer;

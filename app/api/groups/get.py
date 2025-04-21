@@ -20,6 +20,19 @@ def groups_get():
     ])
 
 
+@groups_get_blueprint.route("/<int:group_id>", methods=['GET'])
+@login_required
+def group_get(group_id: int):
+    # Make sure current user has access to the group
+    try:
+        group = valid_group(group_id)
+    except ValueError:
+        return {"error": {"message": "Invalid group"}}, 404
+
+    # Return group
+    return jsonify(group.to_dict())
+
+
 def valid_group(group_id: int) -> Group:
     # Check to see if current user is part of the requested group
     member = GroupMember.query.options(

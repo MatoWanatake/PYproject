@@ -2,7 +2,6 @@ import {createBrowserRouter} from 'react-router-dom';
 import Layout from './Layout';
 import Dashboard from "../components/Dashboard";
 import Friendship from "../components/Friendship";
-import Transactions from "../components/Transactions";
 import FriendTransactions from "../components/FriendTransactions/index.js";
 import GroupTransactions from "../components/GroupTransactions/index.js";
 
@@ -17,10 +16,6 @@ export const router = createBrowserRouter([
             {
                 path: "/friendship",
                 element: <Friendship/>,
-            },
-            {
-                path: "/transactions",
-                element: <Transactions/>,
             },
             {
                 path: "/details/friend/:id",

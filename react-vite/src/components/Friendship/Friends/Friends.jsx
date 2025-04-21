@@ -1,8 +1,8 @@
 import './Friends.css';
 import PropTypes from "prop-types";
 import {useModal} from "../../../context/Modal.jsx";
-import FriendFormModal from "./FriendFormModal/index.js";
-import Friend from "./Friend/index.js";
+import FriendFormModal from "./FriendFormModal";
+import Friend from "./Friend";
 import {Link} from "react-router-dom";
 
 function Friends({friends}) {

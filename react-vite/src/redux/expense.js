@@ -1,6 +1,7 @@
 import {fetch} from "./store.js";
 import {isNotNullOrEmpty} from "../utils.js";
 import {getBalance} from "./user.js";
+import PropTypes from "prop-types";
 
 //Action Types
 const EXPENSE_CLEAR = 'expense/clear';
@@ -49,7 +50,7 @@ export const addExpense = ({title, amount, debits, group_id = ""}) => {
 }
 
 export const editExpense = ({id, title, amount, debits, group_id = ""}) => {
-    //Create the post body with two required fields
+    //Create the put body with two required fields
     const put = {title, amount, debits};
 
     //Add the group when set
@@ -144,5 +145,35 @@ function expenseReducer(state = initialState, action) {
             return state;
     }
 }
+
+//PropTypes
+export const PROP_TYPE_DEBIT = PropTypes.shape({
+    expense_id: PropTypes.number.isRequired,
+    amount: PropTypes.number.isRequired,
+    user_id: PropTypes.number.isRequired,
+    created_at: PropTypes.string.isRequired,
+    updated_at: PropTypes.string.isRequired,
+});
+
+export const PROP_TYPE_EXPENSE = PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    amount: PropTypes.number.isRequired,
+    group_id: PropTypes.number,
+    user_id: PropTypes.number.isRequired,
+    created_at: PropTypes.string.isRequired,
+    updated_at: PropTypes.string.isRequired,
+    debits: PropTypes.arrayOf(PROP_TYPE_DEBIT)
+});
+
+export const PROP_TYPE_COMMENT = PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    body: PropTypes.string.isRequired,
+    created_at: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    expense_id: PropTypes.number.isRequired,
+    user_id: PropTypes.number.isRequired,
+    user: PropTypes.object.isRequired,
+});
 
 export default expenseReducer;

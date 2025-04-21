@@ -6,4 +6,26 @@
     :last-child {
         margin-bottom: 0;
     }
+
+    .actions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-top: 20px;
+
+        button {
+            width: 150px;
+            margin-right: 10px;
+        }
+
+        button:last-child {
+            margin-right: 0;
+        }
+    }
+
+    .actions.hidden {
+        display: none;
+    }
 }

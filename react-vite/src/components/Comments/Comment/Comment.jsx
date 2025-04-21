@@ -1,10 +1,10 @@
 import './Comment.css';
-import PropTypes from "prop-types";
 import {toLocalDate} from "../../../utils.js";
 import {useDispatch} from "react-redux";
-import {deleteExpenseComment} from "../../../redux/expense.js";
+import {deleteExpenseComment, PROP_TYPE_COMMENT} from "../../../redux/expense.js";
 import {useModal} from "../../../context/Modal.jsx";
-import CommentFormModal from "../CommentFormModal/index.js";
+import CommentFormModal from "../CommentFormModal";
+import {PROP_TYPE_USER} from "../../../redux/session.js";
 
 function Comment({user, comment}) {
     //Access redux
@@ -49,16 +49,8 @@ function Comment({user, comment}) {
 
 // https://www.npmjs.com/package/prop-types
 Comment.propTypes = {
-    user: PropTypes.object.isRequired,
-    comment: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        body: PropTypes.string.isRequired,
-        created_at: PropTypes.string.isRequired,
-        id: PropTypes.number.isRequired,
-        expense_id: PropTypes.number.isRequired,
-        user_id: PropTypes.number.isRequired,
-        user: PropTypes.object.isRequired,
-    }).isRequired,
+    user: PROP_TYPE_USER.isRequired,
+    comment: PROP_TYPE_COMMENT.isRequired,
 }
 
 export default Comment;

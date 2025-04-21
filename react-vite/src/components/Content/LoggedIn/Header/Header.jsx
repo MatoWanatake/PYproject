@@ -1,11 +1,11 @@
 import './Header.css';
 import {useModal} from "../../../../context/Modal.jsx";
 import ExpenseFormModal from "../../../ExpenseFormModal";
-import PaymentFormModal from "../../../PaymentFormModal";
+import CreditFormModal from "../../../CreditFormModal";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getBalance} from "../../../../redux/user.js";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {toCurrency} from "../../../../utils.js";
 
 function Header() {
@@ -37,7 +37,7 @@ function Header() {
         event.preventDefault();
 
         //Show modal
-        setModalContent(<PaymentFormModal/>);
+        setModalContent(<CreditFormModal/>);
     }
 
     //Abort if is not signed in otherwise load data
@@ -55,7 +55,9 @@ function Header() {
     return (
         <div className="header">
             <header>
-                <div className="title">Dashboard</div>
+                <div className="title">
+                    <Link to="/">Dashboard</Link>
+                </div>
                 <div className="buttons">
                     <button onClick={add}>Add an Expense</button>
                     <button className="tertiary" onClick={pay}>Pay an Expense</button>
@@ -64,15 +66,19 @@ function Header() {
             <div className="details">
                 <div className="detail">
                     <div className="title">Total Balance</div>
-                    <div className="value">{toCurrency(-balance.owe + balance.owed)}</div>
+                    <div className="value">{toCurrency(balance.summary.net)}</div>
                 </div>
                 <div className="detail">
                     <div className="title">You Owe</div>
-                    <div className="value">{toCurrency(balance.owe)}</div>
+                    <div className="value">{toCurrency(balance.summary.owes)}</div>
                 </div>
                 <div className="detail">
                     <div className="title">You Are Owed</div>
-                    <div className="value">{toCurrency(balance.owed)}</div>
+                    <div className="value">{toCurrency(balance.summary.owed)}</div>
+                </div>
+                <div className="detail">
+                    <div className="title">You Have Been Paid</div>
+                    <div className="value">{toCurrency(balance.summary.paid)}</div>
                 </div>
             </div>
         </div>

@@ -38,6 +38,9 @@ def expense_group_get(group_id: int):
     # Return all debits for the current user and the friend
     return jsonify({
         "expenses": [expense.to_dict() for expense in expenses.values()],
-        "debits": [debit.to_dict() for debit in debits],
-        "credits": [credit.to_dict() for credit in expense_credits]
+        "debits": [debit.to_dict() | {"user": debit.user.to_dict(), "expense": debit.expense.to_dict()} for debit in
+                   debits],
+        "credits": [
+            credit.to_dict() | {"user_paid_to": credit.recipient.to_dict(), "user_paid_by": credit.payer.to_dict()} for
+            credit in expense_credits]
     })

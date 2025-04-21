@@ -3,14 +3,6 @@
     flex-direction: column;
     width: 100%;
 
-    hr {
-        border: none;
-        height: 2px;
-        background: linear-gradient(to right, transparent, white, transparent);
-        width: 75%;
-        margin-bottom: 20px;
-    }
-
     .balances {
         display: flex;
         flex-direction: column;

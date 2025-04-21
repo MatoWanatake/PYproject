@@ -5,8 +5,11 @@ import Expenses from "./Expenses/index.js";
 import Debits from "./Debits/index.js";
 import Credits from "./Credits/index.js";
 import Summary from "./Summary/index.js";
+import {PROP_TYPE_DEBIT, PROP_TYPE_EXPENSE} from "../../redux/expense.js";
+import {PROP_TYPE_CREDIT} from "../../redux/credit.js";
+import {PROP_TYPE_USER} from "../../redux/session.js";
 
-function Transactions({transactions}) {
+function Transactions({user, name, transactions}) {
     //Get the expenses
     const expenses = sortArrayByKey(
         transactions.expenses || [],
@@ -36,42 +39,22 @@ function Transactions({transactions}) {
     //The HTML that makes up the component
     return (
         <div className="transactions">
-            <Summary debits={totalDebits} credits={totalCredits} outstanding={outstanding}/>
-            <Expenses expenses={expenses} hidden={outstanding === 0}/>
-            <Debits debits={debits} hidden={outstanding === 0}/>
-            <Credits credits={credits} hidden={outstanding === 0}/>
+            <Summary user={user} name={name} debits={totalDebits} credits={totalCredits} outstanding={outstanding}/>
+            <Expenses user={user} expenses={expenses} debits={debits} hidden={outstanding === 0}/>
+            <Debits user={user} debits={debits} hidden={outstanding === 0}/>
+            <Credits user={user} credits={credits} hidden={outstanding === 0}/>
         </div>
     );
 }
 
 // https://www.npmjs.com/package/prop-types
 Transactions.propTypes = {
+    user: PROP_TYPE_USER.isRequired,
+    name: PropTypes.string.isRequired,
     transactions: PropTypes.shape({
-        expenses: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            title: PropTypes.string.isRequired,
-            amount: PropTypes.number.isRequired,
-            group_id: PropTypes.number,
-            user_id: PropTypes.number.isRequired,
-            created_at: PropTypes.string.isRequired,
-            updated_at: PropTypes.string.isRequired,
-        })),
-        debits: PropTypes.arrayOf(PropTypes.shape({
-            expense_id: PropTypes.number.isRequired,
-            amount: PropTypes.number.isRequired,
-            user_id: PropTypes.number.isRequired,
-            created_at: PropTypes.string.isRequired,
-            updated_at: PropTypes.string.isRequired,
-        })),
-        credits: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            paid_by: PropTypes.number.isRequired,
-            paid_to: PropTypes.number.isRequired,
-            group_id: PropTypes.number,
-            amount: PropTypes.number.isRequired,
-            created_at: PropTypes.string.isRequired,
-            updated_at: PropTypes.string.isRequired,
-        }))
+        expenses: PropTypes.arrayOf(PROP_TYPE_EXPENSE).isRequired,
+        debits: PropTypes.arrayOf(PROP_TYPE_DEBIT).isRequired,
+        credits: PropTypes.arrayOf(PROP_TYPE_CREDIT).isRequired
     })
 };
 

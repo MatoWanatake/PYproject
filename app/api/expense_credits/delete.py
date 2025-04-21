@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask_login import login_required
 
 from app.api.expense_credits.get import valid_expense_credit, expense_credits_get
-from app.models import db, Expense, ExpenseCredit
+from app.models import db, ExpenseCredit
 
 expense_credits_delete_blueprint = Blueprint('expense_credits_delete_blueprint', __name__)
 
@@ -20,7 +20,7 @@ def expense_credits_delete(expense_credit_id: int):
     db.session.query(
         ExpenseCredit
     ).filter(
-        Expense.id == expense_credit_id
+        ExpenseCredit.id == expense_credit_id
     ).delete()
 
     # Commit remaining changes

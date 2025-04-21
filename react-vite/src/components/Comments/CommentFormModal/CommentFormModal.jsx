@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import './CommentFormModal.css';
 import {useDispatch, useSelector} from "react-redux";
 import {useModal} from "../../../context/Modal.jsx";
-import {addExpenseComment, editExpenseComment, getExpenseComments} from "../../../redux/expense.js";
+import {addExpenseComment, editExpenseComment, getExpenseComments, PROP_TYPE_COMMENT} from "../../../redux/expense.js";
 import PropTypes from "prop-types";
 
 function CommentFormModal({expense_id, comment}) {
@@ -102,15 +102,7 @@ function CommentFormModal({expense_id, comment}) {
 // https://www.npmjs.com/package/prop-types
 CommentFormModal.propTypes = {
     expense_id: PropTypes.number.isRequired,
-    comment: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        body: PropTypes.string.isRequired,
-        created_at: PropTypes.string.isRequired,
-        id: PropTypes.number.isRequired,
-        expense_id: PropTypes.number.isRequired,
-        user_id: PropTypes.number.isRequired,
-        user: PropTypes.object.isRequired,
-    }),
+    comment: PROP_TYPE_COMMENT,
 }
 
 export default CommentFormModal;

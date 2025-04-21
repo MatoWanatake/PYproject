@@ -1,16 +1,19 @@
-import './CashPaymentFormModal.css';
+import './CreditCashFormModal.css';
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useModal} from "../../../context/Modal.jsx";
 import {getFriends, getGroups} from "../../../redux/user.js";
-import {addCredit} from "../../../redux/credit.js";
+import {addCredit, editCredit, PROP_TYPE_CREDIT} from "../../../redux/credit.js";
 import {getGroupMembers} from "../../../redux/group.js";
 import {useSendEvent} from "../../../hooks/useSendEvent.js";
+import {isNotNullOrEmpty} from "../../../utils.js";
 
-export const EVENT_PAYMENT_ADDED = "payment-added";
+export const EVENT_ADD_CREDIT = "credit-added";
+export const EVENT_EDIT_CREDIT = "credit-added";
+export const EVENT_DELETE_CREDIT = "credit-added";
 
-function CashPaymentFormModal() {
+function CreditCashFormModal({credit}) {
     //Get event bus
     const emitter = useSendEvent();
 
@@ -30,9 +33,9 @@ function CashPaymentFormModal() {
     const {closeModal} = useModal();
 
     //State
-    const [group, setGroup] = useState("");
-    const [friend, setFriend] = useState("");
-    const [amount, setAmount] = useState(0.00);
+    const [group, setGroup] = useState(credit?.group_id || "");
+    const [friend, setFriend] = useState(credit?.paid_to || "");
+    const [amount, setAmount] = useState(credit?.amount || 0.00);
     const [errors, setErrors] = useState({});
 
     //Set friends
@@ -61,12 +64,22 @@ function CashPaymentFormModal() {
         event.preventDefault();
 
         //Persist
-        dispatch(addCredit({
-            paid_to: friend,
-            amount: amount,
-            group_id: group,
-        }))
-            .then(() => emitter.emit(EVENT_PAYMENT_ADDED))
+        const data = {
+            paid_to: parseInt(friend),
+            amount: parseFloat(amount),
+            group_id: isNotNullOrEmpty(group) ? parseInt(group) : null,
+        }
+
+        const promise =
+            credit?.id ?
+                //Update
+                dispatch(editCredit({id: credit.id, ...data})) :
+
+                //New
+                dispatch(addCredit(data));
+
+        promise
+            .then(() => emitter(credit?.id ? EVENT_EDIT_CREDIT : EVENT_ADD_CREDIT, data))
             .then(() => closeModal())
             .catch(response => {
                 response.json()
@@ -97,7 +110,7 @@ function CashPaymentFormModal() {
 
     //The HTML that makes up the component
     return (
-        <div className="cash-payment-form-modal">
+        <div className="cash-credit-form-modal">
             <header>Cash Payment</header>
             <form className="form" onSubmit={handleSubmit}>
                 <div className="row">
@@ -142,12 +155,17 @@ function CashPaymentFormModal() {
                     {errors.amount && <p className="error">{errors.amount}</p>}
                 </div>
                 <div className="row full buttons">
-                    <button type="submit">Save</button>
                     <button className="tertiary" onClick={cancel}>Cancel</button>
+                    <button type="submit">Save</button>
                 </div>
             </form>
         </div>
     );
 }
 
-export default CashPaymentFormModal;
+// https://www.npmjs.com/package/prop-types
+CreditCashFormModal.propTypes = {
+    credit: PROP_TYPE_CREDIT
+}
+
+export default CreditCashFormModal;

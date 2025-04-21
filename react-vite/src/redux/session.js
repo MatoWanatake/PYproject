@@ -1,7 +1,9 @@
 import {clear as clearCredit} from "./credit.js";
 import {clear as clearExpense} from "./expense.js";
+import {clear as clearFriend} from "./friend.js";
 import {clear as clearGroup} from "./group.js";
 import {clear as clearUser} from "./user.js";
+import PropTypes from "prop-types";
 
 //Action Types
 const SET_USER = 'session/setUser';
@@ -73,6 +75,7 @@ export const thunkLogout = () => async (dispatch) => {
             dispatch(removeUser())
             dispatch(clearCredit())
             dispatch(clearExpense())
+            dispatch(clearFriend())
             dispatch(clearGroup())
             dispatch(clearUser())
         });
@@ -92,5 +95,15 @@ function sessionReducer(state = initialState, action) {
             return state;
     }
 }
+
+//PropTypes
+export const PROP_TYPE_USER = PropTypes.shape({
+    created_at: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+    updated_at: PropTypes.string.isRequired,
+    first_name: PropTypes.string.isRequired,
+})
 
 export default sessionReducer;
