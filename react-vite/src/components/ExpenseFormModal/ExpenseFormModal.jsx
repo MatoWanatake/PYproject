@@ -151,8 +151,6 @@ function ExpenseFormModal({expense}) {
             .then(() => emitter(expense?.id ? EVENT_EDIT_EXPENSE : EVENT_ADD_EXPENSE, data))
             .then(() => closeModal())
             .catch(response => {
-                console.log(response);
-
                 response.json()
                     .then(json => setErrors(json))
             });

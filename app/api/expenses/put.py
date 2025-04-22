@@ -26,16 +26,19 @@ def groups_put(expense_id: int):
         expense.title = form.data.get("title")
         expense.amount = form.data.get("amount")
 
-        # Update the group
+        # Update the expense
         db.session.flush()
 
         # Remove existing expense debits
         db.session.query(ExpenseDebit).filter(ExpenseDebit.expense_id == expense.id).delete()
 
+        # Delete the current expense debits
+        db.session.flush()
+
         # Add debits for the expenses
         for debit in form.data.get("debits"):
             db.session.add(ExpenseDebit(
-                expense_id=expense.id, user_id=debit.get("id"), amount=debit.get("amount")
+                expense_id=expense.id, user_id=debit.get("user_id"), amount=debit.get("amount")
             ))
 
         # Commit remaining changes

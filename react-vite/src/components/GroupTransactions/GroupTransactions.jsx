@@ -54,7 +54,6 @@ function GroupTransactions() {
     //Listen for relevant events
     useOnEvent([EVENT_ADD_EXPENSE, EVENT_EDIT_EXPENSE, EVENT_DELETE_EXPENSE], (_, data) => {
         //Only load data if related to the page being viewed
-        console.log(data, id)
         if (data?.group_id === id) {
             dispatch(getGroupTransactions(id))
         }
