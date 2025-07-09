@@ -18,7 +18,7 @@ RUN pip install -r requirements.txt
 RUN pip install psycopg2
 
 COPY . .
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
-RUN flask db upgrade
-RUN flask seed all
-CMD gunicorn app:app
+CMD ["/start.sh"]
