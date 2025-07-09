@@ -18,6 +18,7 @@ RUN pip install -r requirements.txt
 RUN pip install psycopg2
 
 COPY . .
+
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 

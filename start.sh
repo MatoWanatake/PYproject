@@ -1,3 +1,6 @@
-RUN flask db upgrade
-RUN flask seed all
-CMD gunicorn app:app
+#!/bin/bash
+
+flask db upgrade
+flask seed all
+
+exec gunicorn app:app
