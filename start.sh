@@ -9,4 +9,4 @@ echo "Running flask seed all..."
 flask seed all || { echo "❌ DB seed failed"; exit 1; }
 
 echo "Starting gunicorn..."
-exec gunicorn app:app
+gunicorn --bind 0.0.0.0:5000 app:app

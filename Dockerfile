@@ -1,8 +1,9 @@
-FROM python:3.9.18-alpine3.18
 
-RUN apk add build-base
+FROM --platform=amd64 python:3.9.18
 
-RUN apk add postgresql-dev gcc python3-dev musl-dev
+# RUN apk add build-base
+
+# RUN apk add postgresql-dev gcc python3-dev musl-dev
 
 ARG FLASK_APP
 ARG FLASK_ENV
@@ -19,7 +20,6 @@ RUN pip install psycopg2
 
 COPY . .
 
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
+COPY ./start.sh .
 
-CMD ["/bin/bash", "/start.sh"]
+CMD ["bash", "./start.sh"]
